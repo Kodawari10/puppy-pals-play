@@ -312,3 +312,52 @@ dialog.pairs[open]{max-width:min(520px,96vw)}
 .nickdice:active{transform:scale(.92)}
 @media (max-width:620px){.nickin{font-size:16px;padding:9px 14px}.nickdice{width:44px;height:44px}}
 @media (prefers-reduced-motion:reduce){.nk{animation:none}.nickdice:hover{transform:none}}
+
+/* 🌙 Night mode (html[data-theme=night]): cosy starry colours, same kawaii pinks */
+.themebtn[aria-pressed]{background:#fff;filter:none}
+.themebtn.spin{animation:thspin .55s cubic-bezier(.3,1.5,.6,1)}
+@keyframes thspin{0%{transform:rotate(-200deg) scale(.6)}100%{transform:none}}
+html[data-theme=night]{color-scheme:dark;--bg:#1d1830;--card:#2b2442;--ink:#f6e9f1;--soft:#c2b1d3;--pink:#ff8fb8;--pinkbg:#4a2f4f;--line:#463b62;
+  --toy:#ffb3c6;--small:#ffd38a;--medium:#9be0b5;--large:#8fc8ff;--giant:#c6a8ff}
+html[data-theme=night] body{background:var(--bg) radial-gradient(circle at 14px 14px,#fff6 1px,transparent 1.6px) 0 0/34px 34px,
+  radial-gradient(circle at 30px 25px,#ffd9ec55 1.2px,transparent 1.8px) 0 0/52px 52px;background-color:var(--bg)}
+html[data-theme=night] .hero h1{text-shadow:0 0 18px #ff8fb855}
+html[data-theme=night] .themebtn{background:#3b3158;border-color:#6b5a95;box-shadow:0 3px 0 #15111f,0 0 14px #ffd38a55}
+html[data-theme=night] .controls{background:#251f39d9}
+html[data-theme=night] :is(.search,.sort select,.chip,.favonly,.zctl button,.nav button,.close,.qopt,.toast,.sndbtn,.passport,.dbtn.soft,.csel select,.ctable td,.nickin,.nickdice,.qnext.soft,.potdbtn){background:var(--card);color:var(--ink)}
+html[data-theme=night] .chip[aria-pressed=true],html[data-theme=night] .favonly[aria-pressed=true]{background:var(--pink);color:#2b1830}
+html[data-theme=night] .favonly[aria-pressed=true] svg{fill:#2b1830;stroke:#2b1830}
+html[data-theme=night] .sndbtn[aria-pressed=false]{background:var(--pinkbg)}
+html[data-theme=night] .card .art{background:linear-gradient(#f4ecff,#fff3f8)}
+html[data-theme=night] .card:hover,html[data-theme=night] .card:focus-visible{box-shadow:0 10px 26px #ff8fb833}
+html[data-theme=night] .fav{background:#2b2442e6}
+html[data-theme=night] dialog{background:var(--card);box-shadow:0 30px 80px #000a}
+html[data-theme=night] dialog::backdrop{background:#0c0916b3}
+html[data-theme=night] .dart{background:linear-gradient(160deg,#4a2f4f,#352a52)}
+html[data-theme=night] .zoom{background:radial-gradient(circle at 50% 55%,#fff7fb 0,#f1e8ff 62%,#e2d6fb 100%)}
+html[data-theme=night] .stats div{background:#241e38}
+html[data-theme=night] .qart{background:radial-gradient(circle,#fff 55%,#f1e8ff);border-color:#6b5a95}
+html[data-theme=night] .qopt.right{background:#21483a;border-color:#7fd3a0}
+html[data-theme=night] .qopt.wrong{background:#4f2338;border-color:#ff9bb8}
+html[data-theme=night] .qfb.good{color:#8fe5b2}html[data-theme=night] .qfb.bad{color:#ffa3c4}
+html[data-theme=night] .potd{background:linear-gradient(135deg,#2b2442,#3a2c3c);border-color:#8a6a5a;box-shadow:0 8px 22px #0005}
+html[data-theme=night] .potdart{background:radial-gradient(circle at 50% 60%,#ffe9d3,#fff6ec 70%)}
+html[data-theme=night] .potdk{color:#ffb98a}html[data-theme=night] .potddate{background:#5a3d33;color:#ffd2b0}
+html[data-theme=night] .potdbtn{color:#ffc79f;border-color:#8a6a5a}
+html[data-theme=night] .passport.complete{background:linear-gradient(135deg,#2b2442,#3d3528);border-color:#ffd38a}
+html[data-theme=night] .stamp,html[data-theme=night] .dnew{background:#4a3d2a;color:#ffd38a}
+html[data-theme=night] .dress{background:#2b244299;border-color:#7a4a6e}
+html[data-theme=night] .dresst,html[data-theme=night] .petn,html[data-theme=night] .nickin,html[data-theme=night] .nk{color:#ffb3cf}
+html[data-theme=night] .nickin{border-color:#7a4a6e}html[data-theme=night] .nickin::placeholder{color:#9d86a8}
+html[data-theme=night] .sw{border-color:var(--card)}
+html[data-theme=night] .mopt.chosen{background:#3b3060}html[data-theme=night] .mname{color:#cbb8ff}
+html[data-theme=night] .mart{background:radial-gradient(circle,#fff 55%,#f3edff)}
+html[data-theme=night] .cswap{background:#24395a;color:#9fd6ff;box-shadow:0 3px 0 #15233a}
+html[data-theme=night] .cstage{background:linear-gradient(#2a3366,#3b2f5a 78%);border-bottom-color:#4f8f6a}
+html[data-theme=night] .cstage::before{content:"🌙"}html[data-theme=night] .cstage::after{content:"⭐"}
+html[data-theme=night] .cverdict{color:#9fd6ff}html[data-theme=night] .cbar{background:#3a3152}
+html[data-theme=night] .pback{border-color:#7a4a6e}
+html[data-theme=night] .pcard.got .pface{background:#21483a}
+html[data-theme=night] .qk{color:#ffb3cf}
+html[data-theme=night] code{color:#ffd9ec}
+html[data-theme=night] .pface{background:linear-gradient(#f7f0ff,#fff3f8);color:#4a3434}html[data-theme=night] .pface .pname{color:#8a6f6f}

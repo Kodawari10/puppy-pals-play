@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puppy Pals: Cute Dog Breed Gallery</title>
 <meta name="theme-color" content="#ff7aa8">
-<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, dress-up outfits, nicknames and photo stickers for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Guess the Pup quiz and a Pup Pairs memory game.">
+<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, dress-up outfits, nicknames and photo stickers for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Guess the Pup quiz, a Pup Pairs memory game and a cosy night mode.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Puppy Pals">
@@ -13,13 +13,14 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script>/* set the theme before first paint (theme.js handles the toggle) */(function(){var t;try{t=localStorage.getItem("puppyPals.theme");}catch(e){}if(t!=="night"&&t!=="day")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"night":"day";document.documentElement.setAttribute("data-theme",t);})();</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">40</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="passport" id="passport" aria-label="Pup Passport">
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">40</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
@@ -187,6 +188,7 @@
 <script src="breeds.js"></script>
 <script src="app.js"></script>
 <script src="sounds.js"></script>
+<script src="theme.js"></script>
 <script src="quiz.js"></script>
 <script src="pairs.js"></script>
 <script src="sticker.js"></script>
