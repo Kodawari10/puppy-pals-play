@@ -529,3 +529,20 @@ html[data-theme=night] .readbtn{background:#2e2747;color:#d9ccff;border-color:#5
 html[data-theme=night] .readbtn.on{background:#8f74e0;color:#fff}
 @media (max-width:480px){.readbtn{width:100%}}
 @media (prefers-reduced-motion:reduce){.readbtn.on{animation:none}}
+
+/* 💞 Friendship hearts */
+.friend{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin:4px 0 8px;padding:8px 12px;border-radius:16px;background:linear-gradient(90deg,#fff0f6,#fff8ee);border:2px solid #ffd3e4}
+.friend .fl{font-weight:800;font-size:.85rem;color:#e0558f}
+.friend .fhs{display:inline-flex;gap:2px;font-size:1.15rem;line-height:1}
+.friend .fh.on{animation:fhpop .35s both}
+.friend .ft{font-weight:800;color:#a8457a;font-size:.9rem}
+.friend .fn{flex-basis:100%;font-size:.78rem;color:#9a7b8c}
+.friend.max{background:linear-gradient(90deg,#ffe3f0,#fff1c9);border-color:#ffb3cf}
+.friend.levelup{animation:fhup .9s ease-out}
+@keyframes fhpop{0%{transform:scale(.4)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes fhup{0%{box-shadow:0 0 0 0 rgba(255,122,168,.7);transform:scale(1)}40%{transform:scale(1.04)}100%{box-shadow:0 0 0 14px rgba(255,122,168,0);transform:scale(1)}}
+html[data-theme=night] .friend{background:linear-gradient(90deg,#3e2a3a,#3a3128);border-color:#6b3e57}
+html[data-theme=night] .friend .fl,html[data-theme=night] .friend .ft{color:#ffb3cf}
+html[data-theme=night] .friend .fn{color:#d3b6c6}
+@media (max-width:480px){.friend{padding:8px 10px}.friend .fhs{font-size:1.25rem}}
+@media (prefers-reduced-motion:reduce){.friend .fh.on,.friend.levelup{animation:none}}

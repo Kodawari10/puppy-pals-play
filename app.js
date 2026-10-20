@@ -26,6 +26,7 @@
     document.querySelectorAll('.fav[data-id="' + b.id + '"]').forEach(function (f) { paintFav(f, b, true); });
     if (dlg.open && visible[current] === b) paintFav($("dfav"), b, true);
     sfx(isFav(b.id) ? "heart" : "unheart");
+    if (dlg.open && visible[current] === b) friendTick();
   }
   function sfx(name, b) { if (window.PuppySound) PuppySound.play(name, b); }
 
@@ -110,7 +111,7 @@
     var b = visible[current]; if (!b || !dlg.open) return;
     pets[b.id] = petCount(b.id) + 1;
     try { localStorage.setItem(PET_KEY, JSON.stringify(pets)); } catch (e) {}
-    paintPets(b); hearts(); sfx("pet", b);
+    paintPets(b); hearts(); sfx("pet", b); friendTick();
     var a = $("dart"); a.classList.remove("petted"); void a.offsetWidth; a.classList.add("petted");
     if (pets[b.id] === PET_LOVE) setTimeout(function () { toast("🥰 " + b.name + " loves you! " + PET_LOVE + " pets, best friends!"); sfx("yay"); }, 250);
   }
@@ -135,7 +136,7 @@
     var b = visible[current]; if (!b || !dlg.open) return;
     baths[b.id] = bathCount(b.id) + 1;
     try { localStorage.setItem(BATH_KEY, JSON.stringify(baths)); } catch (e) {}
-    paintBath(b); hearts(["🫧", "🫧", "💧", "🧼"]);
+    paintBath(b); hearts(["🫧", "🫧", "💧", "🧼"]); friendTick();
     var a = $("dart"); a.classList.remove("bathing"); void a.offsetWidth; a.classList.add("bathing");
     $("dbathlive").textContent = b.name + " splashes in the bubbles and shakes off!";
     sfx("pet", b);
@@ -181,7 +182,7 @@
     var s = snackOf(k), a = $("dart");
     hearts(k === fav ? [s[1], "💖", "✨"] : [s[1], "✨"]);
     a.classList.remove("munch"); void a.offsetWidth; a.classList.add("munch");
-    paintSnack(b);
+    paintSnack(b); friendTick();
     if (!was && k === fav) { $("dtreatlive").textContent = "Yum! " + s[2] + " is " + b.name + "'s favourite!"; setTimeout(function () { toast("😋 " + s[1] + " " + cap(s[2]) + " is " + b.name + "'s favourite snack!"); sfx("yay"); }, 250); }
     else { $("dtreatlive").textContent = b.name + (k === fav ? " munches " : " nibbles ") + s[2] + (k === fav ? " happily." : ". Not the favourite, try another!"); sfx("pet", b); }
     return k;
@@ -241,7 +242,7 @@
       paintDress(b);
       $("dresslive").textContent = outfitText(b);
       var z = $("dart"); z.classList.remove("petted", "dressing"); void z.offsetWidth; z.classList.add("dressing");
-      hearts(SPARKLES); sfx("pop");
+      hearts(SPARKLES); sfx("pop"); friendTick();
     }
   }
   function wear(b, slot, v) {
@@ -282,6 +283,7 @@
       if (n) { toast("💕 " + b.name + " is now called " + n + "!"); sfx("heart"); }
       else { toast(b.name + " doesn't have a nickname anymore."); sfx("unheart"); }
     }
+    if (dlg.open && visible[current] === b) friendTick();
     return n;
   }
   function suggestNick(b) {
@@ -293,6 +295,39 @@
     i.placeholder = "Name your " + b.name + "…";
     $("dnickdice").setAttribute("aria-label", "Suggest a cute name for " + b.name);
   }
+  // ---------- 💞 Friendship hearts: pets, treats, baths, a favorite heart, a nickname and an outfit all grow each pup's friendship ----------
+  var FRIEND_STEPS = [0, 1, 5, 10, 18, 26], FRIEND_MAX = 5;
+  var FRIEND_TITLES = ["Just met", "New friend", "Pal", "Buddy", "Best buddy", "Best friends forever"];
+  var FRIEND_TOASTS = ["", "new friends", "pals", "buddies", "best buddies", "best friends forever"];
+  var friendShown = { id: null, lvl: 0 };
+  function friendPts(b) {
+    var v = snacks[b.id];
+    return Math.min(petCount(b.id), 10) + Math.min(v ? v.n : 0, 6) + (snackFound(b.id) ? 2 : 0) + Math.min(bathCount(b.id), 5) +
+      (isFav(b.id) ? 3 : 0) + (nickOf(b.id) ? 2 : 0) + (outfits[b.id] ? 2 : 0);
+  }
+  function friendLevel(pts) { var l = 0; for (var i = 1; i < FRIEND_STEPS.length; i++) if (pts >= FRIEND_STEPS[i]) l = i; return l; }
+  function friendOf(b) {
+    var pts = friendPts(b), lvl = friendLevel(pts), next = FRIEND_STEPS[lvl + 1];
+    return { pts: pts, lvl: lvl, title: FRIEND_TITLES[lvl], toNext: next == null ? 0 : next - pts };
+  }
+  function paintFriend(b, cheer) {
+    if (!b || !$("dfriend")) return;
+    var f = friendOf(b), h = "";
+    for (var i = 1; i <= FRIEND_MAX; i++) h += '<span class="fh' + (i <= f.lvl ? " on" : "") + '">' + (i <= f.lvl ? "💗" : "🤍") + "</span>";
+    $("dfhearts").innerHTML = h;
+    $("dftitle").textContent = f.title;
+    $("dfnext").textContent = f.lvl >= FRIEND_MAX ? "✨ max friendship!" : f.lvl ? f.toNext + " more to the next heart" : "Pet, feed or bathe to make friends";
+    $("dfriend").setAttribute("aria-label", "Friendship with " + b.name + ": " + f.lvl + " of " + FRIEND_MAX + " hearts, " + f.title);
+    $("dfriend").classList.toggle("max", f.lvl >= FRIEND_MAX);
+    var up = cheer && friendShown.id === b.id && f.lvl > friendShown.lvl;
+    friendShown = { id: b.id, lvl: f.lvl };
+    if (up) {
+      var el = $("dfriend"); el.classList.remove("levelup"); void el.offsetWidth; el.classList.add("levelup");
+      setTimeout(function () { toast((f.lvl >= FRIEND_MAX ? "💞 " : "💗 ") + b.name + " and you are " + (f.lvl >= FRIEND_MAX ? "" : "now ") + FRIEND_TOASTS[f.lvl] + "!"); sfx(f.lvl >= FRIEND_MAX ? "fanfare" : "yay"); }, 900);
+    }
+    return f;
+  }
+  function friendTick() { var b = visible[current]; if (b && dlg.open) paintFriend(b, true); }
   var SPARKLES = ["✨", "🎀", "⭐", "💖"];
   var visible = [], current = -1;
 
@@ -386,7 +421,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintDress(b); paintNick(b); paintFriend(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact; if (typeof stopRead === "function") stopRead(); $("dreadlive").textContent = "";
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -729,6 +764,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice() };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
