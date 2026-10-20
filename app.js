@@ -324,5 +324,29 @@
   $("emptydog").innerHTML = DogArt.svg({ id: "empty-pug", name: "Confused pug", look: { ears: "rose", earColor: "#2d2424", head: "wide", muzzle: "short", muzzleColor: "#3a2f2f", tail: "curl", coat: { base: "#e9cfa1", light: "#f3e2c3" }, eyes: { size: 1.1, droopy: true }, wrinkles: true } });
   render();
   if (location.hash) { var i = visible.findIndex(function (b) { return "#" + b.id === location.hash; }); if (i >= 0) openDlg(i); }
+  // ---------- Pup of the Day: the same pup for everyone on a given local date ----------
+  function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function pupOfDay(key) {
+    var h = 2166136261; // FNV-1a over the date string
+    for (var k = 0; k < key.length; k++) { h ^= key.charCodeAt(k); h = Math.imul(h, 16777619) >>> 0; }
+    return B[h % B.length];
+  }
+  function openBreed(id) {
+    var i = visible.findIndex(function (b) { return b.id === id; });
+    if (i < 0) { state.q = ""; state.sizes = []; state.groups = []; state.fav = false; $("q").value = ""; render(); sync(); i = visible.findIndex(function (b) { return b.id === id; }); }
+    if (i >= 0) openDlg(i);
+  }
+  (function potd() {
+    var key = dayKey(), b = pupOfDay(key);
+    $("potdart").innerHTML = DogArt.svg(b, { id: "potd-" + b.id, title: false });
+    $("potdname").textContent = b.name;
+    $("potdinfo").textContent = "📍 " + b.origin + " · " + b.traits.join(", ");
+    $("potddate").textContent = new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    $("potd").dataset.id = b.id;
+    $("potdbtn").setAttribute("aria-label", "Say hi to " + b.name + ", today's pup");
+    $("potdbtn").onclick = function () { openBreed(b.id); };
+    $("potdart").onclick = function () { openBreed(b.id); };
+  })();
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
