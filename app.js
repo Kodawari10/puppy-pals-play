@@ -362,9 +362,29 @@
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
+    if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
     if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
     else if (e.key === "+" || e.key === "=") zoomBy(1.5); else if (e.key === "-" || e.key === "_") zoomBy(1 / 1.5); else if (e.key === "0") zReset();
   });
+
+  // ---------- 📸 stickers: save the pup (in its outfit) as a cute PNG card (sticker.js) ----------
+  var stickerBusy = false;
+  function sticker() {
+    var b = visible[current], btn = $("dsticker");
+    if (!b || !dlg.open || stickerBusy || !window.PuppySticker) return;
+    stickerBusy = true; btn.disabled = true; btn.textContent = "📸 Snap!";
+    var z = $("zoom"); z.classList.remove("flash"); void z.offsetWidth; z.classList.add("flash");
+    sfx("pop");
+    PuppySticker.save(b).then(function (r) {
+      if (r === "saved") toast("📸 " + b.name + " sticker saved!");
+      else if (r === "shared") toast("💌 " + b.name + " sticker shared!");
+      if (r !== "cancelled") { hearts(["✨", "📸", "💖"]); sfx("yay"); }
+    }, function () { toast("😿 Couldn't make the sticker, please try again."); }).then(function () {
+      stickerBusy = false; btn.disabled = false; btn.textContent = "📸 Sticker";
+    });
+  }
+  $("dsticker").onclick = sticker;
+  $("zoom").addEventListener("animationend", function (e) { if (e.animationName === "snapflash") $("zoom").classList.remove("flash"); });
 
   // ---------- in-dialog zoom/pan: edits the SVG viewBox so it stays vector-crisp ----------
   var Z = { x: 0, y: 0, w: 200 }, ZMAX = 6, PAD = 12;
