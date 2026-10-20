@@ -28,6 +28,52 @@
     sfx(isFav(b.id) ? "heart" : "unheart");
   }
   function sfx(name, b) { if (window.PuppySound) PuppySound.play(name, b); }
+
+  // ---------- Pup Passport: every pup you open gets a paw stamp (saved in localStorage) ----------
+  var MET_KEY = "puppyPals.met", met = [];
+  try { met = JSON.parse(localStorage.getItem(MET_KEY) || "[]"); } catch (e) { met = []; }
+  if (!Array.isArray(met)) met = [];
+  met = met.filter(function (id, i) { return met.indexOf(id) === i && B.some(function (b) { return b.id === id; }); });
+  function isMet(id) { return met.indexOf(id) >= 0; }
+  var STAMP = '<span class="stamp" title="Met!"><span aria-hidden="true">🐾</span><span class="sr">, already met</span></span>';
+  function milestoneMsg(n) {
+    var half = Math.ceil(B.length / 2);
+    if (n === B.length) return "🏆 You met all " + B.length + " pups! You're a true Puppy Pal!";
+    if (n === 1) return "🎉 Your first pup friend! Collect paw stamps in your Pup Passport.";
+    if (n === half) return "💖 Halfway there! " + n + " of " + B.length + " pups met.";
+    if (n === 5 || n === 10 || n === 25) return (n === 25 ? "🌈 " : n === 10 ? "🌟 " : "🐾 ") + n + " pups met! You're making friends fast.";
+    return "";
+  }
+  function paintPassport() {
+    var n = met.length, done = n === B.length;
+    $("metn").textContent = n; $("mett").textContent = B.length;
+    $("ppfill").style.width = (100 * n / B.length) + "%";
+    var bar = $("ppbar"); bar.setAttribute("aria-valuenow", n); bar.setAttribute("aria-valuemax", B.length);
+    bar.setAttribute("aria-valuetext", n + " of " + B.length + " pups met");
+    $("passport").classList.toggle("complete", done);
+    $("meetbtn").textContent = done ? "Visit a random pal 🎲" : "Meet a new pup 🎲";
+  }
+  function meet(b) {
+    var fresh = !isMet(b.id);
+    $("dnew").hidden = !fresh;
+    if (!fresh) return false;
+    met.push(b.id);
+    try { localStorage.setItem(MET_KEY, JSON.stringify(met)); } catch (e) {}
+    var c = document.querySelector('.card[data-id="' + b.id + '"]');
+    if (c && !c.querySelector(".stamp")) { c.insertAdjacentHTML("beforeend", STAMP); c.querySelector(".stamp").classList.add("new"); }
+    paintPassport();
+    var msg = milestoneMsg(met.length);
+    if (msg) {
+      setTimeout(function () { if (window.PuppyPals) PuppyPals.toast(msg); sfx(met.length === B.length ? "fanfare" : "yay"); }, 450);
+      var pp = $("passport"); pp.classList.remove("cheer"); void pp.offsetWidth; pp.classList.add("cheer");
+    }
+    return true;
+  }
+  function meetRandom() {
+    var pool = B.filter(function (b) { return !isMet(b.id); });
+    if (!pool.length) pool = B;
+    openBreed(pool[Math.floor(Math.random() * pool.length)].id);
+  }
   var visible = [], current = -1;
 
   // pre-render art once
@@ -90,7 +136,7 @@
       cell.className = "cell"; cell.style.animationDelay = Math.min(i * 18, 400) + "ms";
       var c = document.createElement("button");
       c.type = "button"; c.className = "card"; c.dataset.id = b.id;
-      c.innerHTML = '<div class="art">' + ART[b.id] + "</div><h3>" + b.name + '</h3><div class="meta"><span class="sz ' + b.size + '">' + b.size + "</span><span>" + b.group + "</span></div>";
+      c.innerHTML = '<div class="art">' + ART[b.id] + "</div><h3>" + b.name + '</h3><div class="meta"><span class="sz ' + b.size + '">' + b.size + "</span><span>" + b.group + "</span></div>" + (isMet(b.id) ? STAMP : "");
       c.onclick = function () { openDlg(i); };
       var h = document.createElement("button");
       h.type = "button"; h.className = "fav"; h.dataset.id = b.id; h.innerHTML = HEART; paintFav(h, b);
@@ -119,7 +165,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b);
+    paintFav($("dfav"), b); meet(b);
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -366,6 +412,8 @@
       w.addEventListener("statechange", function () { if (w.state === "activated") toast("🐾 Puppy Pals now works offline!"); });
     }).catch(function () {});
   }
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast };
+  paintPassport();
+  $("meetbtn").onclick = meetRandom;
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
