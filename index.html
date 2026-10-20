@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puppy Pals: Cute Dog Breed Gallery</title>
 <meta name="theme-color" content="#ff7aa8">
-<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, dress-up outfits and photo stickers for every pup, a Which pup are you? personality quiz, a Guess the Pup quiz and a Pup Pairs memory game.">
+<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, dress-up outfits and photo stickers for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Guess the Pup quiz and a Pup Pairs memory game.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Puppy Pals">
@@ -19,7 +19,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">40</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="passport" id="passport" aria-label="Pup Passport">
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">40</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
@@ -159,6 +159,26 @@
   </div>
 </dialog>
 
+<dialog id="compare" class="quiz compare" aria-labelledby="ctitle">
+  <button class="close" id="cclose" aria-label="Close Size up">×</button>
+  <h2 id="ctitle" class="qtitle">Size up! ⚖️</h2>
+  <div class="cpick">
+    <label class="csel"><span class="sr">First pup</span><select id="csel1"></select></label>
+    <button id="cswap" class="cswap" type="button" aria-label="Swap pups" title="Swap (X)">⇄</button>
+    <label class="csel"><span class="sr">Second pup</span><select id="csel2"></select></label>
+  </div>
+  <div class="cstage" id="cstage" role="group">
+    <button class="cpup" id="cpup1" type="button"></button>
+    <button class="cpup" id="cpup2" type="button"></button>
+  </div>
+  <div class="cnames" aria-hidden="true"><span id="cname1"></span><span id="cname2"></span></div>
+  <p class="cverdict" id="cverdict" aria-live="polite"></p>
+  <table class="ctable"><caption class="sr">Side by side stats</caption><tbody id="ctable"></tbody></table>
+  <p class="clife" id="clife"></p>
+  <p class="chint">Tap a pup to meet it · drawn to scale by weight</p>
+  <button id="crandom" class="qnext" type="button" title="Random pair (R)">🎲 Random pair</button>
+</dialog>
+
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <footer>Every pup is drawn by one parametric SVG generator (<code>dogs.js</code>) from the data in <code>breeds.js</code>.</footer>
@@ -170,5 +190,6 @@
 <script src="pairs.js"></script>
 <script src="sticker.js"></script>
 <script src="match.js"></script>
+<script src="compare.js"></script>
 </body>
 </html>
