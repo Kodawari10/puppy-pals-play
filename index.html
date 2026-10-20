@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puppy Pals: Cute Dog Breed Gallery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <h1>🐾 Puppy Pals</h1>
+  <p class="sub">A kawaii gallery of <span id="total">34</span> dog breeds. Tap a pup to learn more!</p>
+</header>
+
+<section class="controls" aria-label="Filter breeds">
+  <div class="searchrow">
+    <label class="search">
+      <span class="sr">Search breeds</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      <input id="q" type="search" placeholder="Search name, origin, trait… (try “Japan”)" autocomplete="off">
+    </label>
+    <button id="favonly" class="favonly" type="button" aria-pressed="false" title="Show only your favorite pups"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.4 4.5 6.9 4.5c2.1 0 3.9 1.2 5.1 3 1.2-1.8 3-3 5.1-3 3.5 0 5.5 3.5 4.2 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg><span>Favorites</span><span class="n" id="favn">0</span></button>
+    <label class="sort"><span>Sort</span>
+      <select id="sort">
+        <option value="az">A → Z</option>
+        <option value="small">Smallest first</option>
+        <option value="big">Biggest first</option>
+        <option value="group">By group</option>
+      </select>
+    </label>
+  </div>
+  <div class="filter" role="group" aria-label="Size">
+    <span class="flabel">Size</span>
+    <div class="chips" id="sizes"></div>
+  </div>
+  <div class="filter" role="group" aria-label="Group">
+    <span class="flabel">Group</span>
+    <div class="chips" id="groups"></div>
+  </div>
+  <div class="status"><span id="count" aria-live="polite"></span> <button id="reset" class="link" hidden>Clear filters</button></div>
+</section>
+
+<main id="grid" class="grid"></main>
+<div id="empty" class="empty" hidden>
+  <div class="emptydog" id="emptydog"></div>
+  <p><span id="emptymsg">No pups match that.</span> <button class="link" id="reset2">Clear filters</button></p>
+</div>
+
+<dialog id="dlg" aria-labelledby="dname">
+  <button class="close" id="dclose" aria-label="Close">×</button>
+  <div class="dart">
+    <div class="zoom" id="zoom" tabindex="0" aria-label="Dog illustration. Use + and − to zoom, drag to pan.">
+      <div id="dart" class="zart"></div>
+    </div>
+    <div class="zctl" role="toolbar" aria-label="Zoom">
+      <button id="zout" aria-label="Zoom out">−</button>
+      <span id="zlvl" aria-live="polite">100%</span>
+      <button id="zin" aria-label="Zoom in">+</button>
+      <button id="zreset" aria-label="Reset zoom" title="Reset zoom">⟲</button>
+    </div>
+    <p class="zhint">Scroll, pinch or double-tap to zoom · drag to pan</p>
+  </div>
+  <div class="dbody">
+    <div class="dhead"><h2 id="dname"></h2><button id="dfav" class="fav big" type="button" aria-pressed="false" title="Favorite (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.4 4.5 6.9 4.5c2.1 0 3.9 1.2 5.1 3 1.2-1.8 3-3 5.1-3 3.5 0 5.5 3.5 4.2 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></button></div>
+    <p class="dorigin" id="dorigin"></p>
+    <div class="tags" id="dtags"></div>
+    <dl class="stats">
+      <div><dt>Group</dt><dd id="dgroup"></dd></div>
+      <div><dt>Size</dt><dd id="dsize"></dd></div>
+      <div><dt>Weight</dt><dd id="dweight"></dd></div>
+      <div><dt>Lifespan</dt><dd id="dlife"></dd></div>
+    </dl>
+    <p class="fact"><b>Fun fact:</b> <span id="dfact"></span></p>
+    <div class="nav"><button id="dprev">← Prev</button><button id="dnext">Next →</button></div>
+  </div>
+</dialog>
+
+<footer>Every pup is drawn by one parametric SVG generator (<code>dogs.js</code>) from the data in <code>breeds.js</code>.</footer>
+<script src="dogs.js"></script>
+<script src="breeds.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
