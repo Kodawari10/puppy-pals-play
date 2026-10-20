@@ -48,6 +48,7 @@
     });
     if (!ok) btn.classList.add("wrong");
     $("qart").classList.add(ok ? "yay" : "oops");
+    if (window.PuppySound) PuppySound.play(ok ? "yay" : "oops");
     $("qscore").textContent = "★ " + q.score;
     $("qfb").className = "qfb " + (ok ? "good" : "bad");
     $("qfb").textContent = ok ? cheer() + " It's the " + ans.name + " from " + ans.origin + "." : "Aww, that's the " + ans.name + ". " + ans.traits[0] + " and " + ans.traits[1].toLowerCase() + "!";
@@ -63,6 +64,7 @@
     if (isNew) setBest(q.score);
     $("qplay").hidden = true; $("qdone").hidden = false;
     $("qfinal").textContent = q.score + " / " + ROUNDS;
+    if (window.PuppySound) PuppySound.play(q.score >= ROUNDS / 2 ? "fanfare" : "pop");
     $("qmsg").textContent = (q.score === ROUNDS ? "Perfect! You're a top dog! 🏆" : q.score >= 7 ? "Great job, puppy pro! 🐶" : q.score >= 4 ? "Nice try! The pups believe in you. 🐾" : "Keep browsing the gallery and try again! 💕") + (isNew && prev ? " New best score!" : "");
     updateBestLabel();
     $("qagain").focus();

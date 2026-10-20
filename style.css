@@ -156,3 +156,8 @@ dialog.quiz[open]{display:block;max-width:min(460px,94vw);padding:18px 18px 20px
 body.offline .hero h1::after{content:"offline";display:inline-block;vertical-align:middle;margin-left:8px;font-size:.8rem;font-weight:800;
   letter-spacing:.04em;color:#fff;background:var(--soft);border-radius:999px;padding:3px 10px}
 @media (display-mode:standalone){.hero{padding-top:max(28px,env(safe-area-inset-top))}}
+/* sound toggle */
+.sndbtn{font:inherit;font-size:1.15rem;line-height:1;width:42px;height:42px;border-radius:50%;border:2px solid var(--line);background:#fff;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .12s,background .12s}
+.sndbtn:hover,.sndbtn:focus-visible{transform:translateY(-2px) rotate(6deg);outline:0;border-color:var(--pink);box-shadow:0 3px 0 var(--line),0 0 0 4px #ff7aa833}
+.sndbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+.sndbtn[aria-pressed="false"]{background:var(--pinkbg);filter:grayscale(.4)}

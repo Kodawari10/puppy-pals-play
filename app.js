@@ -25,7 +25,9 @@
     saveFavs(); $("favn").textContent = favs.length;
     document.querySelectorAll('.fav[data-id="' + b.id + '"]').forEach(function (f) { paintFav(f, b, true); });
     if (dlg.open && visible[current] === b) paintFav($("dfav"), b, true);
+    sfx(isFav(b.id) ? "heart" : "unheart");
   }
+  function sfx(name, b) { if (window.PuppySound) PuppySound.play(name, b); }
   var visible = [], current = -1;
 
   // pre-render art once
@@ -138,7 +140,7 @@
   }
   function openDlg(i) {
     if (busy) return;
-    current = i; var b = visible[i]; fill(b);
+    current = i; var b = visible[i]; fill(b); sfx("bark", b);
     if (dlg.open) return;
     var src = cardArt(b), from = src && src.getBoundingClientRect();
     dlg.showModal();
