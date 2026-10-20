@@ -231,11 +231,28 @@ dialog.pairs[open]{max-width:min(520px,96vw)}
 .petbtn.bth{background:linear-gradient(135deg,#8fd8ff,#5bb8f5);box-shadow:0 4px 0 #3a95d4}
 .petbtn.bth:hover,.petbtn.bth:focus-visible{box-shadow:0 5px 0 #3a95d4,0 0 0 4px #5bb8f533}
 .petbtn.bth:active{box-shadow:0 1px 0 #3a95d4}
+.petbtn.trk{background:linear-gradient(135deg,#ffd27a,#ffad42);box-shadow:0 4px 0 #e08a1e;color:#5a3300}
+.petbtn.trk:hover,.petbtn.trk:focus-visible{box-shadow:0 5px 0 #e08a1e,0 0 0 4px #ffad4233}
+.petbtn.trk:active{box-shadow:0 1px 0 #e08a1e}
 .petn.bathn{color:#2f8fcf}
 html[data-theme=night] .petn.bathn{color:#9fdcff}
 .zart.bathing svg{animation:shakeoff .8s ease-in-out;transform-origin:50% 85%}
 @keyframes shakeoff{0%,100%{transform:none}10%{transform:scale(1.02,.96)}20%,40%,60%{transform:rotate(-6deg)}30%,50%,70%{transform:rotate(6deg)}85%{transform:scale(1.03,.97)}}
 @media (prefers-reduced-motion:reduce){.zart.bathing svg{animation-duration:.01s}}
+.petn.trickn{color:#c06a00}
+html[data-theme=night] .petn.trickn{color:#ffd28a}
+.zart[class*=trick-] svg{transform-origin:50% 85%}
+.zart.trick-sit svg{animation:tricksit .9s ease-in-out}
+.zart.trick-paw svg{animation:trickpaw .9s ease-in-out}
+.zart.trick-spin svg{animation:trickspin .9s ease-in-out;transform-origin:50% 50%}
+.zart.trick-jump svg{animation:trickjump .9s cubic-bezier(.3,.7,.4,1)}
+.zart.trick-roll svg{animation:trickroll 1s ease-in-out;transform-origin:50% 50%}
+@keyframes tricksit{0%,100%{transform:none}30%,70%{transform:scale(1.06,.88) translateY(6%)}}
+@keyframes trickpaw{0%,100%{transform:none}25%,65%{transform:rotate(-9deg)}45%{transform:rotate(-4deg)}}
+@keyframes trickspin{0%{transform:none}100%{transform:rotate(360deg)}}
+@keyframes trickjump{0%,100%{transform:none}15%{transform:scale(1.06,.9)}45%{transform:translateY(-22%) scale(.97,1.05)}75%{transform:scale(1.05,.93)}}
+@keyframes trickroll{0%{transform:none}50%{transform:translateX(12%) rotate(180deg) scale(.9)}100%{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.zart[class*=trick-] svg{animation-duration:.01s}}
 /* Snack time */
 .treatrow{margin-top:-2px}
 .petbtn.trt{background:linear-gradient(135deg,#ffc978,#ffa94d);box-shadow:0 4px 0 #e0892f}

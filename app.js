@@ -143,6 +143,42 @@
     if (baths[b.id] === BATH_CLEAN) setTimeout(function () { toast("✨ " + b.name + " is squeaky clean! " + BATH_CLEAN + " bubbly baths"); sfx("yay"); }, 250);
   }
 
+  // ---------- 🎪 Tricks: tap "Trick" (or T) to teach each pup five tricks in order; once learned, it shows off a random one ----------
+  var TRICK_KEY = "puppyPals.tricks", TRICKS = [
+    { id: "sit", name: "Sit", e: "🪑" }, { id: "paw", name: "Shake paw", e: "🐾" }, { id: "spin", name: "Spin", e: "🌀" },
+    { id: "jump", name: "Jump", e: "⬆️" }, { id: "roll", name: "Roll over", e: "🔄" }], tricks = {};
+  try { tricks = JSON.parse(localStorage.getItem(TRICK_KEY) || "{}"); } catch (e) { tricks = {}; }
+  if (!tricks || typeof tricks !== "object" || Array.isArray(tricks)) tricks = {};
+  Object.keys(tricks).forEach(function (id) {
+    var n = Math.floor(tricks[id]);
+    if (!B.some(function (b) { return b.id === id; }) || !(n > 0)) delete tricks[id]; else tricks[id] = Math.min(n, TRICKS.length);
+  });
+  function trickCount(id) { return tricks[id] || 0; }
+  function trickText(b) {
+    var n = trickCount(b.id); if (!n) return "";
+    return n >= TRICKS.length ? "🌟 knows all " + TRICKS.length + " tricks!" : "🎪 " + n + " of " + TRICKS.length + " tricks";
+  }
+  function paintTrick(b) {
+    var n = trickCount(b.id);
+    $("dtrick").setAttribute("aria-label", (n >= TRICKS.length ? "Ask " + b.name + " to show off a trick" : "Teach " + b.name + " " + TRICKS[n].name) + " (T)");
+    $("dtrickn").textContent = trickText(b);
+  }
+  function trick(pickIdx) {
+    var b = visible[current]; if (!b || !dlg.open) return null;
+    var n = trickCount(b.id), t, learned = false;
+    if (n < TRICKS.length) { t = TRICKS[n]; tricks[b.id] = n + 1; learned = true; try { localStorage.setItem(TRICK_KEY, JSON.stringify(tricks)); } catch (e) {} }
+    else t = TRICKS[typeof pickIdx === "number" ? pickIdx : Math.floor(Math.random() * TRICKS.length)];
+    paintTrick(b); hearts([t.e, "✨", "🎪", "💖"]);
+    var a = $("dart"); TRICKS.forEach(function (x) { a.classList.remove("trick-" + x.id); }); void a.offsetWidth; a.classList.add("trick-" + t.id);
+    $("dtricklive").textContent = learned ? b.name + " learned " + t.name + "!" : b.name + " shows off " + t.name + "!";
+    sfx("pet", b);
+    if (learned) setTimeout(function () {
+      if (tricks[b.id] === TRICKS.length) { toast("🌟 " + b.name + " knows all " + TRICKS.length + " tricks! What a clever pup"); sfx("yay"); }
+      else toast(t.e + " " + b.name + " learned " + t.name + "!");
+    }, 250);
+    return t.id;
+  }
+
   // ---------- Snack time: tap "Treat" (or K) to offer dog-safe snacks; each pup has a secret favourite to discover ----------
   var SNACK_KEY = "puppyPals.snacks", snacks = {};
   var SNACKS = [["bone", "🦴", "a bone biscuit"], ["carrot", "🥕", "carrot sticks"], ["potato", "🍠", "sweet potato"], ["apple", "🍎", "apple slices"], ["cheese", "🧀", "a cheese nibble"], ["chicken", "🍗", "chicken bites"]];
@@ -421,7 +457,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintDress(b); paintNick(b); paintFriend(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintTrick(b); $("dtricklive").textContent = ""; paintDress(b); paintNick(b); paintFriend(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing", "trick-sit", "trick-paw", "trick-spin", "trick-jump", "trick-roll");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact; if (typeof stopRead === "function") stopRead(); $("dreadlive").textContent = "";
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -486,8 +522,8 @@
   function step(d) { if (visible.length && !busy) openDlg((current + d + visible.length) % visible.length); }
   $("dprev").onclick = function () { step(-1); }; $("dnext").onclick = function () { step(1); };
   $("dclose").onclick = closeDlg;
-  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); }; $("dbath").onclick = bath;
-  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); if (e.animationName === "shakeoff") $("dart").classList.remove("bathing"); });
+  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); }; $("dbath").onclick = bath; $("dtrick").onclick = function () { trick(); };
+  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); if (e.animationName === "shakeoff") $("dart").classList.remove("bathing"); if (/^trick/.test(e.animationName)) TRICKS.forEach(function (x) { $("dart").classList.remove("trick-" + x.id); }); });
   $("dsurprise").onclick = surprise; $("dclassic").onclick = classic;
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
@@ -507,6 +543,7 @@
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
     if ((e.key === "k" || e.key === "K") && !e.ctrlKey && !e.metaKey && !e.altKey) { treat(); return; }
+    if ((e.key === "t" || e.key === "T") && !e.ctrlKey && !e.metaKey && !e.altKey) { trick(); return; }
     if ((e.key === "b" || e.key === "B") && !e.ctrlKey && !e.metaKey && !e.altKey) { bath(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
@@ -764,6 +801,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice() };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, tricks: function (id) { return id ? trickCount(id) : JSON.parse(JSON.stringify(tricks)); }, trick: trick, trickList: TRICKS.map(function (t) { return t.id; }), nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice() };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
