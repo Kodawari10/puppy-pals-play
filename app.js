@@ -189,6 +189,38 @@
     outfits[b.id] = o; saveOutfits(); redress(b);
   }
   function classic() { var b = visible[current]; if (!b || !dlg.open || !outfits[b.id]) return; delete outfits[b.id]; saveOutfits(); redress(b); }
+  // ---------- ✏️ Nicknames: give each pup your own cute name (saved in localStorage) ----------
+  var NICK_KEY = "puppyPals.names", NICK_MAX = 16, nicks = {};
+  var NICK_IDEAS = ["Mochi", "Dango", "Boba", "Momo", "Yuzu", "Tofu", "Nori", "Sakura", "Kiki", "Pudding", "Biscuit", "Peanut", "Waffles", "Bean", "Pom Pom", "Cookie", "Maple", "Honey", "Taiyaki", "Udon", "Matcha", "Coco", "Sprinkles", "Marshmallow", "Noodle", "Onigiri", "Pickles", "Bubbles"];
+  function cleanNick(v) { return typeof v === "string" ? v.replace(/[\u0000-\u001f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, NICK_MAX).trim() : ""; }
+  try { nicks = JSON.parse(localStorage.getItem(NICK_KEY) || "{}"); } catch (e) { nicks = {}; }
+  if (!nicks || typeof nicks !== "object" || Array.isArray(nicks)) nicks = {};
+  Object.keys(nicks).forEach(function (id) { var v = cleanNick(nicks[id]); if (v && B.some(function (b) { return b.id === id; })) nicks[id] = v; else delete nicks[id]; });
+  function nickOf(id) { return nicks[id] || ""; }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (ch) { return "&#" + ch.charCodeAt(0) + ";"; }); }
+  function nickTag(b) { var n = nickOf(b.id); return n ? '<span class="nk" title="Your nickname for ' + esc(b.name) + '">✏️ ' + esc(n) + "</span>" : ""; }
+  function setNick(b, v, quiet) {
+    var n = cleanNick(v), old = nickOf(b.id);
+    if (n) nicks[b.id] = n; else delete nicks[b.id];
+    try { localStorage.setItem(NICK_KEY, JSON.stringify(nicks)); } catch (e) {}
+    b._hay = hay(b);
+    var c = document.querySelector('.card[data-id="' + b.id + '"]');
+    if (c) { var t = c.querySelector(".nk"); if (t) t.remove(); if (n) c.querySelector("h3").insertAdjacentHTML("beforebegin", nickTag(b)); }
+    if (!quiet && n !== old) {
+      if (n) { toast("💕 " + b.name + " is now called " + n + "!"); sfx("heart"); }
+      else { toast(b.name + " doesn't have a nickname anymore."); sfx("unheart"); }
+    }
+    return n;
+  }
+  function suggestNick(b) {
+    var cur = nickOf(b.id), pool = NICK_IDEAS.filter(function (x) { return x !== cur; });
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function paintNick(b) {
+    var i = $("dnick"); i.value = nickOf(b.id);
+    i.placeholder = "Name your " + b.name + "…";
+    $("dnickdice").setAttribute("aria-label", "Suggest a cute name for " + b.name);
+  }
   var SPARKLES = ["✨", "🎀", "⭐", "💖"];
   var visible = [], current = -1;
 
@@ -199,7 +231,7 @@
 
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function norm(s) { return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
-  function hay(b) { return norm([b.name, b.origin, b.group, b.size].concat(b.traits).join(" ")); }
+  function hay(b) { return norm([b.name, b.origin, b.group, b.size, nickOf(b.id)].concat(b.traits).join(" ")); }
   B.forEach(function (b) { b._hay = hay(b); });
 
   function chip(label, value, kind, count, dot) {
@@ -253,7 +285,7 @@
       cell.className = "cell"; cell.style.animationDelay = Math.min(i * 18, 400) + "ms";
       var c = document.createElement("button");
       c.type = "button"; c.className = "card"; c.dataset.id = b.id;
-      c.innerHTML = '<div class="art">' + ART[b.id] + "</div><h3>" + b.name + '</h3><div class="meta"><span class="sz ' + b.size + '">' + b.size + "</span><span>" + b.group + "</span></div>" + (isMet(b.id) ? STAMP : "");
+      c.innerHTML = '<div class="art">' + ART[b.id] + "</div>" + nickTag(b) + "<h3>" + b.name + '</h3><div class="meta"><span class="sz ' + b.size + '">' + b.size + "</span><span>" + b.group + "</span></div>" + (isMet(b.id) ? STAMP : "");
       c.onclick = function () { openDlg(i); };
       var h = document.createElement("button");
       h.type = "button"; h.className = "fav"; h.dataset.id = b.id; h.innerHTML = HEART; paintFav(h, b);
@@ -282,7 +314,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); paintDress(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -352,6 +384,9 @@
   $("dsurprise").onclick = surprise; $("dclassic").onclick = classic;
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
+  $("dnick").addEventListener("change", function () { var b = visible[current]; if (b) this.value = setNick(b, this.value); });
+  $("dnickdice").onclick = function () { var b = visible[current]; if (!b) return; $("dnick").value = setNick(b, suggestNick(b)); hearts(["✏️", "💖", "✨"]); };
+  $("nickform").addEventListener("submit", function (e) { e.preventDefault(); $("dnick").blur(); });
   dlg.addEventListener("cancel", function (e) { e.preventDefault(); closeDlg(); });
   dlg.addEventListener("click", function (e) { if (e.target === dlg) closeDlg(); });
   dlg.addEventListener("close", function () {
@@ -359,6 +394,8 @@
     if (pendingRender) { pendingRender = false; var keep = (visible[current] || {}).id; render(); current = visible.findIndex(function (b) { return b.id === keep; }); if (current < 0) { $("favonly").focus(); return; } }
     var c = document.querySelector('.card[data-id="' + (visible[current] || {}).id + '"]'); if (c) c.focus({ preventScroll: true }); });
   dlg.addEventListener("keydown", function (e) {
+    if (e.target && e.target.id === "dnick") { if (e.key === "Enter") { e.preventDefault(); e.target.blur(); } return; } // typing a nickname never triggers shortcuts
+    if ((e.key === "n" || e.key === "N") && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); $("dnick").focus(); $("dnick").select(); return; }
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
@@ -556,6 +593,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();

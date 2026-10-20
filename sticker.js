@@ -38,7 +38,8 @@
       c.drawImage(im, W / 2 - 190, 60, 380, 380);
       heart(c, 110, 110, 34, PINK); heart(c, 500, 140, 26, "#ffb3cc"); heart(c, 486, 400, 30, PINK);
       c.textAlign = "center"; c.textBaseline = "alphabetic"; c.fillStyle = INK;
-      fit(c, b.name, W - 120, 52, 900); c.fillText(b.name, W / 2, 500);
+      var nk = window.PuppyPals && PuppyPals.nick ? PuppyPals.nick(b.id) : "", title = nk ? "“" + nk + "” the " + b.name : b.name;
+      fit(c, title, W - 120, 52, 900); c.fillText(title, W / 2, 500);
       c.fillStyle = "#8a6676"; fit(c, "📍 " + b.origin + " · " + b.size + " pup", W - 120, 26, 700); c.fillText("📍 " + b.origin + " · " + b.size + " pup", W / 2, 542);
       var traits = b.traits.join(" · "); fit(c, traits, W - 120, 24, 700); c.fillText(traits, W / 2, 578);
       // pill with pets
