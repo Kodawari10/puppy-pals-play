@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puppy Pals: Cute Dog Breed Gallery</title>
 <meta name="theme-color" content="#ff7aa8">
-<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day and a Guess the Pup quiz.">
+<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Guess the Pup quiz and a Pup Pairs memory game.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Puppy Pals">
@@ -19,7 +19,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">34</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="potd" id="potd" aria-labelledby="potdk">
     <div class="potdart" id="potdart" aria-hidden="true"></div>
     <div class="potdtxt">
@@ -112,6 +112,22 @@
   </div>
 </dialog>
 
+<dialog id="pairs" class="quiz pairs" aria-labelledby="ptitle">
+  <button class="close" id="pclose" aria-label="Close Pup Pairs">×</button>
+  <h2 id="ptitle" class="qtitle">Pup Pairs!</h2>
+  <div class="qtrack" aria-hidden="true"><div class="qbar pbar" id="pbar"></div></div>
+  <div id="pplay">
+    <div class="qhud"><span id="pmoves"></span><span id="pfound" class="qscore"></span></div>
+    <div class="pgrid" id="pgrid" role="group" aria-label="Memory cards"></div>
+    <p class="qfb" id="pfb" aria-live="polite"></p>
+  </div>
+  <div id="pdone" class="qdone" hidden>
+    <p class="qfinal" id="pfinal"></p>
+    <p id="pmsg" aria-live="polite"></p>
+    <button id="pagain" class="qnext" type="button">Play again 🧩</button>
+  </div>
+</dialog>
+
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <footer>Every pup is drawn by one parametric SVG generator (<code>dogs.js</code>) from the data in <code>breeds.js</code>.</footer>
@@ -120,5 +136,6 @@
 <script src="app.js"></script>
 <script src="sounds.js"></script>
 <script src="quiz.js"></script>
+<script src="pairs.js"></script>
 </body>
 </html>

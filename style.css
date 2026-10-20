@@ -161,3 +161,27 @@ body.offline .hero h1::after{content:"offline";display:inline-block;vertical-ali
 .sndbtn:hover,.sndbtn:focus-visible{transform:translateY(-2px) rotate(6deg);outline:0;border-color:var(--pink);box-shadow:0 3px 0 var(--line),0 0 0 4px #ff7aa833}
 .sndbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
 .sndbtn[aria-pressed="false"]{background:var(--pinkbg);filter:grayscale(.4)}
+
+/* Pup Pairs memory game */
+.pairsbtn{background:linear-gradient(135deg,#7fd3c0,#6cc3e8 60%,#a99bff);box-shadow:0 6px 0 #4fa3b8,0 10px 20px #6cc3e844}
+.pairsbtn:hover,.pairsbtn:focus-visible{transform:translateY(-2px) rotate(1deg);box-shadow:0 8px 0 #4fa3b8,0 0 0 4px #6cc3e833}
+.pairsbtn:active{box-shadow:0 3px 0 #4fa3b8}
+dialog.pairs[open]{max-width:min(520px,96vw)}
+.pbar{background:linear-gradient(90deg,#a8e6d6,#6cc3e8)}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 2px;perspective:700px}
+.pcard{position:relative;aspect-ratio:3/4;border:0;padding:0;background:none;cursor:pointer;border-radius:16px;font:inherit;color:inherit}
+.pcard:focus-visible{outline:0;box-shadow:0 0 0 4px #6cc3e877}
+.pin{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .38s cubic-bezier(.3,1.4,.6,1)}
+.pcard.up .pin,.pcard.got .pin{transform:rotateY(180deg)}
+.pback,.pface{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center}
+.pback{font-size:1.7rem;background:linear-gradient(135deg,#ffd6e4,#ffe9d6);border:2px solid #ffc4d6;box-shadow:0 4px 0 #f5b8cb;
+  background-image:radial-gradient(circle at 10px 10px,#fff8 2.5px,transparent 3px),linear-gradient(135deg,#ffd6e4,#ffe9d6);background-size:18px 18px,100% 100%}
+.pcard:hover:not(.up):not(.got) .pback{border-color:var(--pink)}
+.pface{transform:rotateY(180deg);background:#fff;border:2px solid var(--line);grid-template-rows:1fr auto;padding:4px 3px 5px;overflow:hidden}
+.pface svg{width:100%;height:100%;min-height:0}
+.pname{font-size:.68rem;font-weight:800;line-height:1.05;color:var(--soft)}
+.pcard.got{cursor:default}.pcard.got .pface{border-color:#7fd3a0;background:#effcf4}
+.pcard.got svg.dog{animation:jump .5s ease 2}
+.pcard.miss .pface{border-color:#ff9bb8;animation:shake .35s ease}
+@media (max-width:360px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){.pin{transition:none}}
