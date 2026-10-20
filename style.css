@@ -463,3 +463,41 @@ dialog.trophies[open]{max-width:min(560px,96vw)}
 html[data-theme=night] .trophy{background:var(--card)}
 html[data-theme=night] .trophy.got{background:linear-gradient(160deg,#3d3528,#3a2c3c);border-color:#ffd38a}
 html[data-theme=night] .trophy .tok{background:#4a3d2a;color:#ffd38a}
+
+/* 🌍 Pups around the world */
+.worldbtn{background:linear-gradient(135deg,#7fd6ff,#8fe3b0 55%,#ffe08a);color:#24506a;box-shadow:0 6px 0 #4fa3c9,0 10px 20px #7fd6ff44}
+.worldbtn:hover,.worldbtn:focus-visible{transform:translateY(-2px) rotate(1deg);box-shadow:0 8px 0 #4fa3c9,0 0 0 4px #7fd6ff44}
+.worldbtn:active{box-shadow:0 3px 0 #4fa3c9}
+dialog.world[open]{max-width:min(560px,96vw)}
+.wcount{margin:0 0 8px;font-weight:800;color:var(--soft);font-size:.9rem}
+.wflags{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px;margin:0 0 10px}
+.wflag{font:inherit;position:relative;min-height:46px;padding:4px 2px 2px;border:2px solid var(--line);border-radius:16px;background:var(--card);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;transition:transform .15s,border-color .15s}
+.wflag .wf{font-size:1.5rem}
+.wflag .wn{font-size:.68rem;font-weight:900;color:var(--soft);margin-top:2px}
+.wflag:hover,.wflag:focus-visible{transform:translateY(-2px);border-color:#7fd6ff;outline:0}
+.wflag[aria-pressed=true]{border-color:#4fa3c9;background:#e6f7ff;box-shadow:0 3px 0 #4fa3c9;transform:translateY(-2px)}
+.wflag.done::after{content:"✓";position:absolute;top:-6px;right:-5px;width:17px;height:17px;border-radius:50%;background:#8fe3b0;color:#1f5a3c;font-size:.7rem;font-weight:900;display:grid;place-items:center}
+.wpanel{border-radius:22px;padding:10px 10px 12px;background:linear-gradient(180deg,#e9f8ff,#fff6f1);border:2px dashed #bfe6f7}
+.wpanel.wpop{animation:wpop .4s cubic-bezier(.3,1.5,.6,1)}
+@keyframes wpop{0%{transform:scale(.96);opacity:.4}100%{transform:none;opacity:1}}
+.wname{margin:2px 0 0;font-size:1.25rem}
+.wname span{font-size:1.5rem;vertical-align:-2px}
+.whi{margin:2px 0;font-weight:900;color:#4fa3c9;font-size:1.05rem}
+.wstat{margin:0 0 8px;font-size:.85rem;font-weight:800;color:var(--soft)}
+.wpups{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.wpup{font:inherit;color:var(--ink);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 8px;border:2px solid var(--line);border-radius:18px;background:var(--card);cursor:pointer;min-height:44px;transition:transform .15s,box-shadow .15s}
+.wpup:hover,.wpup:focus-visible{transform:translateY(-2px);box-shadow:0 6px 14px #7fd6ff44;border-color:#7fd6ff;outline:0}
+.wpup .wart{width:72px;height:72px;border-radius:50%;background:radial-gradient(circle,#fff 55%,#ffeef4);display:block;overflow:hidden}
+.wpup .wart svg{width:100%;height:100%}
+.wpup .wpn{font-weight:800;font-size:.8rem;line-height:1.15}
+.wpup .wpaw{position:absolute;top:4px;right:6px;font-size:.85rem}
+.wpup .wnew{position:absolute;top:4px;right:4px;font-size:.62rem;font-weight:900;color:#fff;background:var(--pink);border-radius:999px;padding:1px 6px}
+.wpup:not(.met) .wart svg{filter:saturate(.85)}
+@media (max-width:420px){.wflags{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.wflag .wf{font-size:1.3rem}.wpups{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.wpup .wart{width:64px;height:64px}}
+html[data-theme=night] .wflag,html[data-theme=night] .wpup{background:var(--card)}
+html[data-theme=night] .wflag[aria-pressed=true]{background:#2f4a6e}
+html[data-theme=night] .wpanel{background:linear-gradient(180deg,#26345a,#2b2442);border-color:#3f5a86}
+html[data-theme=night] .wpup .wart{background:radial-gradient(circle,#fff7fb 55%,#efe6ff)}
+html[data-theme=night] .whi{color:#8fd3ff}
+@media (prefers-reduced-motion:reduce){.wpanel.wpop{animation:none}.wflag,.wpup{transition:none}}
