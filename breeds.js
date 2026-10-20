@@ -105,7 +105,25 @@
       look: { ears: "butterfly", earColor: "#7a3e1f", headScale: 0.98, build: 0.88, muzzle: "short", tail: "plume", fluff: 1, coat: { base: W, second: "#7a3e1f", light: W }, marks: ["sideFace", "blaze"], eyes: { size: 1.2 }, collar: "#ff7aa8" } },
     { id: "schnauzer", name: "Miniature Schnauzer", origin: "Germany", group: "Terrier", size: "small", weight: "5–9 kg", life: "12–15 yrs",
       traits: ["Friendly", "Smart", "Obedient"], fact: "\"Schnauze\" is German for snout. The breed is famous for its bushy beard and eyebrows.",
-      look: { ears: "fold", earSize: 1, head: "long", muzzle: "long", muzzleColor: "#c9ccd1", beard: "#e3e5e8", tail: "stub", coat: { base: "#7d838c", light: "#c9ccd1" }, eyes: { brows: "#e3e5e8" }, collar: "#e8455c" } }
+      look: { ears: "fold", earSize: 1, head: "long", muzzle: "long", muzzleColor: "#c9ccd1", beard: "#e3e5e8", tail: "stub", coat: { base: "#7d838c", light: "#c9ccd1" }, eyes: { brows: "#e3e5e8" }, collar: "#e8455c" } },
+    { id: "chin", name: "Japanese Chin", origin: "Japan", group: "Toy", size: "toy", weight: "3–5 kg", life: "10–12 yrs",
+      traits: ["Charming", "Noble", "Cat-like"], fact: "Happy Chins do the \"Chin spin\", twirling in circles, and they often wash their faces with their paws like a cat.",
+      look: { ears: "long", earSize: 0.8, earFeather: true, earColor: "#2b2628", head: "apple", headScale: 1.04, build: 0.88, muzzle: "short", tail: "plume", tailColor: W, fluff: 1, coat: { base: "#2b2628", body: W, light: W }, marks: ["blaze", "wideBlaze"], eyes: { size: 1.3 }, collar: "#ff7aa8", blush: "#ffa3bd" } },
+    { id: "jspitz", name: "Japanese Spitz", origin: "Japan", group: "Non-Sporting", size: "small", weight: "5–10 kg", life: "12–14 yrs",
+      traits: ["Cheerful", "Playful", "Brave"], fact: "Bred in Japan in the 1920s and 30s from white spitz dogs. Its fluffy snow-white coat is known for shaking off dirt.",
+      look: { ears: "pointy", earSize: 0.7, headScale: 1.06, build: 0.9, muzzle: "short", tail: "curl", fluff: 2, coat: { base: "#fffdf9", light: "#ffffff" }, smile: true, tongue: true, eyes: { size: 1.3 }, nose: "#1a1414", collar: "#ff7aa8", blush: "#ffa3bd" } },
+    { id: "sheltie", name: "Shetland Sheepdog", origin: "Scotland (Shetland Islands)", group: "Herding", size: "small", weight: "6–12 kg", life: "12–14 yrs",
+      traits: ["Bright", "Gentle", "Vocal"], fact: "Shelties come from the Shetland Islands, the same windswept home as the tiny Shetland pony.",
+      look: { ears: "fold", earSize: 0.9, head: "long", headScale: 0.97, muzzle: "long", tail: "plume", tailTip: W, fluff: 1, coat: { base: "#c9773f", light: W }, marks: ["blaze", "chest", "socks"], collar: "#a78bfa" } },
+    { id: "chow", name: "Chow Chow", origin: "China", group: "Non-Sporting", size: "medium", weight: "20–32 kg", life: "8–12 yrs",
+      traits: ["Dignified", "Aloof", "Loyal"], fact: "Chow puppies are born with pink tongues that turn blue-black as they grow up. Their lion-like ruff makes them look like teddy bears.",
+      look: { ears: "tiny", earSize: 0.7, head: "wide", build: 1.15, muzzle: "short", tail: "curl", fluff: 2, coat: { base: "#c46a30", light: "#e8a868" }, tongue: "#4b4a86", eyes: { size: 0.85 }, collar: "#ffcf3c" } },
+    { id: "westie", name: "West Highland White Terrier", origin: "Scotland", group: "Terrier", size: "small", weight: "6–10 kg", life: "13–15 yrs",
+      traits: ["Happy", "Confident", "Spunky"], fact: "Westies were bred white on purpose, so hunters in the Scottish Highlands could easily tell them apart from foxes.",
+      look: { ears: "pointy", earSize: 0.7, head: "round", fluff: 2, muzzle: "short", tail: "flag", tailColor: "#fffdf9", coat: { base: "#fffdf9", light: "#ffffff" }, eyes: { size: 1.1 }, nose: "#1a1414", collar: "#e8455c" } },
+    { id: "pyrenees", name: "Great Pyrenees", origin: "France / Spain (Pyrenees)", group: "Working", size: "giant", weight: "39–54 kg", life: "10–12 yrs",
+      traits: ["Patient", "Calm", "Protective"], fact: "For centuries these fluffy giants guarded sheep in the Pyrenees mountains, and most have double dewclaws on their back legs.",
+      look: { ears: "floppy", earSize: 0.75, earColor: "#ead9b8", head: "wide", build: 1.28, headScale: 0.95, muzzle: "medium", tail: "plume", fluff: 1, coat: { base: "#fbf7ef", light: "#ffffff" }, eyes: { size: 0.9 }, nose: "#1a1414", collar: "#3aa0e8" } }
   ];
   var GROUPS = ["Herding", "Hound", "Non-Sporting", "Sporting", "Terrier", "Toy", "Working"];
   var SIZES = ["toy", "small", "medium", "large", "giant"];

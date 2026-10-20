@@ -8,13 +8,13 @@
   var QS = [
     { q: "Pick a perfect Saturday 🌤️", a: [
       ["🏃 Zoomies at the park", { t: ["Energetic", "Playful", "Athletic", "Lively", "Exuberant", "Sprightly"], g: ["Herding", "Sporting"] }],
-      ["🛋️ A cozy nap on the sofa", { t: ["Calm", "Easygoing", "Low-key", "Gentle", "Patient", "Adaptable"], g: ["Toy"] }],
+      ["🛋️ A cozy nap on the sofa", { t: ["Calm", "Easygoing", "Low-key", "Gentle", "Patient", "Adaptable", "Cat-like"], g: ["Toy"] }],
       ["🧭 Exploring wherever I like", { t: ["Curious", "Inquisitive", "Nosy", "Bold", "Independent", "Merry", "Stubborn"], g: ["Hound", "Terrier"] }],
       ["🎉 A party with all my friends", { t: ["Friendly", "Outgoing", "Sociable", "Cheerful", "Happy", "Affectionate"] }]] },
     { q: "Your friends say you are…", a: [
       ["🛡️ Super loyal", { t: ["Loyal", "Devoted", "Protective", "Dependable", "Watchful"], g: ["Working"] }],
-      ["🤪 Silly and fun", { t: ["Mischievous", "Playful", "Charming", "Sassy", "Feisty", "Cheerful"] }],
-      ["🧠 Really clever", { t: ["Smart", "Clever", "Brilliant", "Trainable", "Focused", "Obedient"], g: ["Herding"] }],
+      ["🤪 Silly and fun", { t: ["Mischievous", "Playful", "Charming", "Sassy", "Feisty", "Cheerful", "Spunky"] }],
+      ["🧠 Really clever", { t: ["Smart", "Clever", "Brilliant", "Trainable", "Focused", "Obedient", "Bright"], g: ["Herding"] }],
       ["🌸 Sweet and gentle", { t: ["Gentle", "Affectionate", "Loving", "Patient", "Polite", "Good-natured"] }]] },
     { q: "Pick a snack 🍡", a: [
       ["🍡 A tiny mochi", { s: { toy: 4, small: 1 } }],
@@ -23,14 +23,14 @@
       ["🍕 The whole party platter", { s: { giant: 4, large: 2 } }]] },
     { q: "Something surprising happens! You…", a: [
       ["🦁 Bravely check it out", { t: ["Brave", "Courageous", "Fearless", "Confident", "Bold"] }],
-      ["😌 Stay cool and do my own thing", { t: ["Calm", "Dignified", "Independent", "Low-key", "Easygoing", "Proud", "Stubborn"] }],
-      ["📣 Tell everyone about it", { t: ["Talkative", "Alert", "Lively", "Outgoing", "Exuberant"] }],
+      ["😌 Stay cool and do my own thing", { t: ["Calm", "Dignified", "Independent", "Low-key", "Easygoing", "Proud", "Stubborn", "Aloof", "Noble"] }],
+      ["📣 Tell everyone about it", { t: ["Talkative", "Alert", "Lively", "Outgoing", "Exuberant", "Vocal"] }],
       ["🤗 Go find a hug", { t: ["Affectionate", "Loving", "Gentle", "Sociable", "Eager"] }]] },
     { q: "Your dream home 🏡", a: [
       ["🏙️ A cozy city flat", { g: ["Toy", "Non-Sporting"], s: { toy: 1, small: 1 } }],
       ["🌾 A farm with lots of space", { g: ["Herding", "Working"], s: { large: 1 } }],
       ["🏔️ Snowy mountains", { o: ["Siberia", "Alaska", "Switzerland", "Japan", "Tibet", "Canada", "Newfoundland"], g: ["Working"] }],
-      ["🌲 A cottage by the forest", { g: ["Hound", "Terrier", "Sporting"], t: ["Merry", "Curious", "Food-motivated"] }]] }
+      ["🌲 A cottage by the forest", { g: ["Hound", "Terrier", "Sporting"], t: ["Merry", "Curious", "Food-motivated", "Clever"] }]] }
   ];
   function points(b, w) {
     var p = 0, tr = b.traits.map(function (t) { return t.toLowerCase(); });
