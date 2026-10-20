@@ -114,6 +114,50 @@
     var a = $("dart"); a.classList.remove("petted"); void a.offsetWidth; a.classList.add("petted");
     if (pets[b.id] === PET_LOVE) setTimeout(function () { toast("🥰 " + b.name + " loves you! " + PET_LOVE + " pets, best friends!"); sfx("yay"); }, 250);
   }
+  // ---------- Snack time: tap "Treat" (or K) to offer dog-safe snacks; each pup has a secret favourite to discover ----------
+  var SNACK_KEY = "puppyPals.snacks", snacks = {};
+  var SNACKS = [["bone", "🦴", "a bone biscuit"], ["carrot", "🥕", "carrot sticks"], ["potato", "🍠", "sweet potato"], ["apple", "🍎", "apple slices"], ["cheese", "🧀", "a cheese nibble"], ["chicken", "🍗", "chicken bites"]];
+  var SNACK_IDS = SNACKS.map(function (x) { return x[0]; });
+  try { snacks = JSON.parse(localStorage.getItem(SNACK_KEY) || "{}"); } catch (e) { snacks = {}; }
+  if (!snacks || typeof snacks !== "object" || Array.isArray(snacks)) snacks = {};
+  Object.keys(snacks).forEach(function (id) {
+    var v = snacks[id];
+    if (!B.some(function (b) { return b.id === id; }) || !v || !Array.isArray(v.tried)) { delete snacks[id]; return; }
+    var t = v.tried.filter(function (x, i) { return SNACK_IDS.indexOf(x) >= 0 && v.tried.indexOf(x) === i; });
+    if (!t.length) { delete snacks[id]; return; }
+    snacks[id] = { tried: t, n: Math.max(t.length, Math.floor(v.n) || 0) };
+  });
+  function favSnack(id) { var h = 0; for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0; return SNACK_IDS[h % SNACKS.length]; }
+  function snackOf(k) { return SNACKS[SNACK_IDS.indexOf(k)]; }
+  function snackFound(id) { var v = snacks[id]; return !!v && v.tried.indexOf(favSnack(id)) >= 0; }
+  function snackText(b) {
+    var v = snacks[b.id]; if (!v) return "";
+    if (snackFound(b.id)) { var f = snackOf(favSnack(b.id)); return "😋 Loves " + f[1] + " " + f[2] + (v.n > 1 ? " · " + v.n + " treats" : ""); }
+    return "🍽️ Tried " + v.tried.length + " of " + SNACKS.length + " snacks";
+  }
+  function paintSnack(b) {
+    $("dtreat").setAttribute("aria-label", "Give " + b.name + " a treat (K)");
+    $("dtreatn").textContent = snackText(b);
+  }
+  function treat(pick) {
+    var b = visible[current]; if (!b || !dlg.open) return null;
+    var v = snacks[b.id] || { tried: [], n: 0 }, fav = favSnack(b.id), was = snackFound(b.id), k;
+    if (was) k = fav;
+    else {
+      var left = SNACK_IDS.filter(function (x) { return v.tried.indexOf(x) < 0; });
+      k = pick && left.indexOf(pick) >= 0 ? pick : left[Math.floor(Math.random() * left.length)];
+      v.tried.push(k);
+    }
+    v.n = (v.n || 0) + 1; snacks[b.id] = v;
+    try { localStorage.setItem(SNACK_KEY, JSON.stringify(snacks)); } catch (e) {}
+    var s = snackOf(k), a = $("dart");
+    hearts(k === fav ? [s[1], "💖", "✨"] : [s[1], "✨"]);
+    a.classList.remove("munch"); void a.offsetWidth; a.classList.add("munch");
+    paintSnack(b);
+    if (!was && k === fav) { $("dtreatlive").textContent = "Yum! " + s[2] + " is " + b.name + "'s favourite!"; setTimeout(function () { toast("😋 " + s[1] + " " + cap(s[2]) + " is " + b.name + "'s favourite snack!"); sfx("yay"); }, 250); }
+    else { $("dtreatlive").textContent = b.name + (k === fav ? " munches " : " nibbles ") + s[2] + (k === fav ? " happily." : ". Not the favourite, try another!"); sfx("pet", b); }
+    return k;
+  }
   // ---------- Dress up: pick a collar and a bow colour for each pup (saved in localStorage) ----------
   var OUTFIT_KEY = "puppyPals.outfits", outfits = {}, SLOTS = ["collar", "bow"];
   var DRESS = [["none", "No", ""], ["pink", "Pink", "#ff7aa8"], ["mint", "Mint", "#4fd1a1"], ["sky", "Sky blue", "#5fb2ff"], ["lilac", "Lilac", "#b38cff"], ["sunny", "Sunny yellow", "#ffcc3d"]];
@@ -314,7 +358,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -379,8 +423,8 @@
   function step(d) { if (visible.length && !busy) openDlg((current + d + visible.length) % visible.length); }
   $("dprev").onclick = function () { step(-1); }; $("dnext").onclick = function () { step(1); };
   $("dclose").onclick = closeDlg;
-  $("dpet").onclick = pet;
-  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); });
+  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); };
+  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); });
   $("dsurprise").onclick = surprise; $("dclassic").onclick = classic;
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
@@ -398,6 +442,7 @@
     if ((e.key === "n" || e.key === "N") && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); $("dnick").focus(); $("dnick").select(); return; }
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
+    if ((e.key === "k" || e.key === "K") && !e.ctrlKey && !e.metaKey && !e.altKey) { treat(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
     if ((e.key === "l" || e.key === "L") && !e.ctrlKey && !e.metaKey && !e.altKey) { share(); return; }
@@ -626,6 +671,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();

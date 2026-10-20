@@ -227,6 +227,14 @@ dialog.pairs[open]{max-width:min(520px,96vw)}
 .zart.petted svg{animation:petwiggle .55s ease-in-out;transform-origin:50% 90%}
 @keyframes petwiggle{0%,100%{transform:none}20%{transform:scale(1.04,.95) rotate(-3deg)}45%{transform:scale(.97,1.04) rotate(3deg)}70%{transform:scale(1.02,.98) rotate(-1.5deg)}}
 @media (max-width:620px){.petbtn{padding:10px 18px}}
+/* Snack time */
+.treatrow{margin-top:-2px}
+.petbtn.trt{background:linear-gradient(135deg,#ffc978,#ffa94d);box-shadow:0 4px 0 #e0892f}
+.petbtn.trt:hover,.petbtn.trt:focus-visible{box-shadow:0 5px 0 #e0892f,0 0 0 4px #ffa94d33}
+.petbtn.trt:active{box-shadow:0 1px 0 #e0892f}
+.zart.munch svg{animation:munch .6s ease-in-out;transform-origin:50% 85%}
+@keyframes munch{0%,100%{transform:none}15%,55%{transform:scale(1.03,.94)}35%,75%{transform:scale(.98,1.04) translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.zart.munch svg{animation-duration:.01s}}
 /* Dress up */
 .dress{background:#ffffffb3;border:2px dashed #ffc2d6;border-radius:18px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
 .dresst{margin:0;text-align:center;font-weight:800;font-size:.9rem;color:#d44d7e}
