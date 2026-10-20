@@ -227,6 +227,15 @@ dialog.pairs[open]{max-width:min(520px,96vw)}
 .zart.petted svg{animation:petwiggle .55s ease-in-out;transform-origin:50% 90%}
 @keyframes petwiggle{0%,100%{transform:none}20%{transform:scale(1.04,.95) rotate(-3deg)}45%{transform:scale(.97,1.04) rotate(3deg)}70%{transform:scale(1.02,.98) rotate(-1.5deg)}}
 @media (max-width:620px){.petbtn{padding:10px 18px}}
+/* Bath time */
+.petbtn.bth{background:linear-gradient(135deg,#8fd8ff,#5bb8f5);box-shadow:0 4px 0 #3a95d4}
+.petbtn.bth:hover,.petbtn.bth:focus-visible{box-shadow:0 5px 0 #3a95d4,0 0 0 4px #5bb8f533}
+.petbtn.bth:active{box-shadow:0 1px 0 #3a95d4}
+.petn.bathn{color:#2f8fcf}
+html[data-theme=night] .petn.bathn{color:#9fdcff}
+.zart.bathing svg{animation:shakeoff .8s ease-in-out;transform-origin:50% 85%}
+@keyframes shakeoff{0%,100%{transform:none}10%{transform:scale(1.02,.96)}20%,40%,60%{transform:rotate(-6deg)}30%,50%,70%{transform:rotate(6deg)}85%{transform:scale(1.03,.97)}}
+@media (prefers-reduced-motion:reduce){.zart.bathing svg{animation-duration:.01s}}
 /* Snack time */
 .treatrow{margin-top:-2px}
 .petbtn.trt{background:linear-gradient(135deg,#ffc978,#ffa94d);box-shadow:0 4px 0 #e0892f}

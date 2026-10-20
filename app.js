@@ -114,6 +114,34 @@
     var a = $("dart"); a.classList.remove("petted"); void a.offsetWidth; a.classList.add("petted");
     if (pets[b.id] === PET_LOVE) setTimeout(function () { toast("🥰 " + b.name + " loves you! " + PET_LOVE + " pets, best friends!"); sfx("yay"); }, 250);
   }
+  // ---------- Bath time: tap "Bath" (or B) for a bubbly wash and a shake-off; 5 baths makes a pup squeaky clean ----------
+  var BATH_KEY = "puppyPals.baths", BATH_CLEAN = 5, baths = {};
+  try { baths = JSON.parse(localStorage.getItem(BATH_KEY) || "{}"); } catch (e) { baths = {}; }
+  if (!baths || typeof baths !== "object" || Array.isArray(baths)) baths = {};
+  Object.keys(baths).forEach(function (id) {
+    var n = Math.floor(baths[id]);
+    if (!B.some(function (b) { return b.id === id; }) || !(n > 0)) delete baths[id]; else baths[id] = n;
+  });
+  function bathCount(id) { return baths[id] || 0; }
+  function bathText(b) {
+    var n = bathCount(b.id); if (!n) return "";
+    return (n >= BATH_CLEAN ? "✨ " : "🫧 ") + n + (n === 1 ? " bath" : " baths") + (n >= BATH_CLEAN ? ", squeaky clean!" : "");
+  }
+  function paintBath(b) {
+    $("dbath").setAttribute("aria-label", "Give " + b.name + " a bath (B)");
+    $("dbathn").textContent = bathText(b);
+  }
+  function bath() {
+    var b = visible[current]; if (!b || !dlg.open) return;
+    baths[b.id] = bathCount(b.id) + 1;
+    try { localStorage.setItem(BATH_KEY, JSON.stringify(baths)); } catch (e) {}
+    paintBath(b); hearts(["🫧", "🫧", "💧", "🧼"]);
+    var a = $("dart"); a.classList.remove("bathing"); void a.offsetWidth; a.classList.add("bathing");
+    $("dbathlive").textContent = b.name + " splashes in the bubbles and shakes off!";
+    sfx("pet", b);
+    if (baths[b.id] === BATH_CLEAN) setTimeout(function () { toast("✨ " + b.name + " is squeaky clean! " + BATH_CLEAN + " bubbly baths"); sfx("yay"); }, 250);
+  }
+
   // ---------- Snack time: tap "Treat" (or K) to offer dog-safe snacks; each pup has a secret favourite to discover ----------
   var SNACK_KEY = "puppyPals.snacks", snacks = {};
   var SNACKS = [["bone", "🦴", "a bone biscuit"], ["carrot", "🥕", "carrot sticks"], ["potato", "🍠", "sweet potato"], ["apple", "🍎", "apple slices"], ["cheese", "🧀", "a cheese nibble"], ["chicken", "🍗", "chicken bites"]];
@@ -358,7 +386,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -423,8 +451,8 @@
   function step(d) { if (visible.length && !busy) openDlg((current + d + visible.length) % visible.length); }
   $("dprev").onclick = function () { step(-1); }; $("dnext").onclick = function () { step(1); };
   $("dclose").onclick = closeDlg;
-  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); };
-  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); });
+  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); }; $("dbath").onclick = bath;
+  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); if (e.animationName === "shakeoff") $("dart").classList.remove("bathing"); });
   $("dsurprise").onclick = surprise; $("dclassic").onclick = classic;
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
@@ -443,6 +471,7 @@
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
     if ((e.key === "k" || e.key === "K") && !e.ctrlKey && !e.metaKey && !e.altKey) { treat(); return; }
+    if ((e.key === "b" || e.key === "B") && !e.ctrlKey && !e.metaKey && !e.altKey) { bath(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
     if ((e.key === "l" || e.key === "L") && !e.ctrlKey && !e.metaKey && !e.altKey) { share(); return; }
@@ -671,6 +700,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
