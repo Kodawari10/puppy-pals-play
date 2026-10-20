@@ -119,6 +119,17 @@ dialog.quiz[open]{display:block;max-width:min(460px,94vw);padding:18px 18px 20px
 .qart svg.dog{animation:hop .9s ease-in-out infinite}
 .qart.yay{border-color:#7fd3a0;background:radial-gradient(circle,#fff 55%,#e6faee)}.qart.yay svg.dog{animation:jump .5s ease 2}
 .qart.oops{border-color:#ffb3c6}.qart.oops svg.dog{animation:shake .4s ease}
+/* Shadow mode: the pup is a silhouette until you answer, then it pops back into colour */
+.qmoderow{margin:-4px 0 8px}
+.qshadow{font:inherit;font-weight:800;font-size:.85rem;min-height:44px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;transition:.15s}
+.qshadow:hover,.qshadow:focus-visible{border-color:var(--pink);outline:0;box-shadow:0 0 0 3px #ff7aa833}
+.qshadow[aria-pressed=true]{background:#3b2f5c;color:#fff;border-color:#3b2f5c}
+.qart svg.dog{transition:filter .6s ease}
+.qart.shadow{background:radial-gradient(circle,#fff 45%,#efe7ff);border-color:#b9a6e8}
+.qart.shadow svg.dog{filter:brightness(0) opacity(.8)}
+.qart.shadow.reveal svg.dog{filter:none}
+.qart.shadow.reveal::after{content:"✨";position:absolute;top:4px;right:10px;font-size:1.6rem;animation:pop .5s ease}
+.qart{position:relative}
 @keyframes jump{0%,100%{transform:translateY(0)}40%{transform:translateY(-12%) rotate(-4deg)}}
 @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-4%)}75%{transform:translateX(4%)}}
 .qopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -337,6 +348,7 @@ html[data-theme=night] .dart{background:linear-gradient(160deg,#4a2f4f,#352a52)}
 html[data-theme=night] .zoom{background:radial-gradient(circle at 50% 55%,#fff7fb 0,#f1e8ff 62%,#e2d6fb 100%)}
 html[data-theme=night] .stats div{background:#241e38}
 html[data-theme=night] .qart{background:radial-gradient(circle,#fff 55%,#f1e8ff);border-color:#6b5a95}
+html[data-theme=night] .qshadow{background:var(--card);color:var(--ink)}html[data-theme=night] .qshadow[aria-pressed=true]{background:#f1e8ff;color:#2a2145;border-color:#f1e8ff}
 html[data-theme=night] .qopt.right{background:#21483a;border-color:#7fd3a0}
 html[data-theme=night] .qopt.wrong{background:#4f2338;border-color:#ff9bb8}
 html[data-theme=night] .qfb.good{color:#8fe5b2}html[data-theme=night] .qfb.bad{color:#ffa3c4}
