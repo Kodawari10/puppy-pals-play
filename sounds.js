@@ -43,11 +43,16 @@
       [523, 659, 784, 1047].forEach(function (f, i) { tone(c, t + i * 0.11, f, 0, 0.22, "triangle", 0.13); });
       tone(c, t + 0.48, 1047, 0, 0.5, "triangle", 0.12); tone(c, t + 0.48, 1319, 0, 0.5, "sine", 0.08);
     },
-    pop: function (c, t) { tone(c, t, 400, 900, 0.09, "sine", 0.16); }
+    pop: function (c, t) { tone(c, t, 400, 900, 0.09, "sine", 0.16); },
+    // a happy little "hehe" pant in the pup's own voice
+    pet: function (c, t, b) {
+      var k = barkVoice(b).k;
+      tone(c, t, 520 * k, 760 * k, 0.09, "sine", 0.12); tone(c, t + 0.11, 600 * k, 880 * k, 0.1, "sine", 0.11);
+    }
   };
   function play(name, b) {
     if (!on || !SFX[name]) return false;
-    log.push(name + (name === "bark" && b ? ":" + b.size : ""));
+    log.push(name + ((name === "bark" || name === "pet") && b ? ":" + b.size : ""));
     if (log.length > 50) log.shift();
     var c = audio(); if (!c) return true;
     try { SFX[name](c, c.currentTime + 0.01, b); } catch (e) {}

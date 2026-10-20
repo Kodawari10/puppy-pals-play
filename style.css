@@ -205,3 +205,14 @@ dialog.pairs[open]{max-width:min(520px,96vw)}
 .dnew{margin:2px 0 6px;display:inline-block;background:#fff6d8;border:2px dashed #ffc7a1;border-radius:999px;padding:3px 12px;font-weight:800;font-size:.85rem;color:#b5651d;animation:pop .4s both}
 .dnew[hidden]{display:none}
 @media (max-width:480px){.passport{grid-template-columns:1fr;padding:10px 12px}.meetbtn{grid-column:1;grid-row:auto;width:100%}}
+/* Give pets */
+.petrow{margin:0;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.petbtn{font:inherit;font-weight:800;font-size:.95rem;color:#fff;background:linear-gradient(135deg,#ff9ec0,#ff7aa8);border:0;border-radius:999px;padding:8px 16px;cursor:pointer;box-shadow:0 4px 0 #e85f8f;transition:transform .12s,box-shadow .12s;touch-action:manipulation}
+.petbtn:hover,.petbtn:focus-visible{transform:translateY(-1px);outline:0;box-shadow:0 5px 0 #e85f8f,0 0 0 4px #ff7aa833}
+.petbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #e85f8f}
+.petn{font-weight:800;font-size:.85rem;color:#d44d7e;min-height:1.2em}
+.pheart{position:absolute;bottom:18%;font-size:1.6rem;pointer-events:none;opacity:0;animation:pfloat 1.2s ease-out both;z-index:2}
+@keyframes pfloat{0%{opacity:0;transform:translate(0,0) scale(.5)}15%{opacity:1;transform:translate(0,-10px) scale(1.15)}100%{opacity:0;transform:translate(var(--dx,0),-150px) scale(.9) rotate(12deg)}}
+.zart.petted svg{animation:petwiggle .55s ease-in-out;transform-origin:50% 90%}
+@keyframes petwiggle{0%,100%{transform:none}20%{transform:scale(1.04,.95) rotate(-3deg)}45%{transform:scale(.97,1.04) rotate(3deg)}70%{transform:scale(1.02,.98) rotate(-1.5deg)}}
+@media (max-width:620px){.petbtn{padding:10px 18px}}

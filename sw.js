@@ -1,6 +1,6 @@
 // Puppy Pals service worker: precache the app so it opens offline.
 // Network-first, so a fresh online visit always gets the latest pups; the cache is the offline fallback.
-var CACHE = "puppy-pals-v4";
+var CACHE = "puppy-pals-v5";
 var FILES = ["./", "index.html", "style.css", "dogs.js", "breeds.js", "app.js", "quiz.js", "pairs.js", "sounds.js", "manifest.webmanifest",
   "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", function (e) {

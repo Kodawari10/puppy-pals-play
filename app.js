@@ -74,6 +74,45 @@
     if (!pool.length) pool = B;
     openBreed(pool[Math.floor(Math.random() * pool.length)].id);
   }
+  // ---------- Pets: tap "Give pets" (or P) in the dialog; hearts float up and the pup wiggles happily ----------
+  var PET_KEY = "puppyPals.pets", pets = {};
+  try { pets = JSON.parse(localStorage.getItem(PET_KEY) || "{}"); } catch (e) { pets = {}; }
+  if (!pets || typeof pets !== "object" || Array.isArray(pets)) pets = {};
+  Object.keys(pets).forEach(function (id) { if (!B.some(function (b) { return b.id === id; }) || !(pets[id] > 0)) delete pets[id]; else pets[id] = Math.floor(pets[id]); });
+  var PET_LOVE = 10, HEARTS = ["💕", "💖", "💗", "✨", "🩷"];
+  function petCount(id) { return pets[id] || 0; }
+  function petText(b) {
+    var n = petCount(b.id);
+    if (!n) return "";
+    return (n >= PET_LOVE ? "🥰 " : "💕 ") + n + (n === 1 ? " pet" : " pets") + (n >= PET_LOVE ? ", best friends!" : "");
+  }
+  function paintPets(b) {
+    $("dpet").setAttribute("aria-label", "Give " + b.name + " pets (P)");
+    $("dpetn").textContent = petText(b);
+  }
+  function hearts() {
+    if (reduced.matches) return;
+    var z = $("zoom"), old = z.querySelectorAll(".pheart");
+    for (var k = 0; k < old.length - 9; k++) old[k].remove();
+    for (var i = 0; i < 3; i++) {
+      var h = document.createElement("span");
+      h.className = "pheart"; h.setAttribute("aria-hidden", "true");
+      h.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+      h.style.left = (22 + Math.random() * 56) + "%";
+      h.style.animationDelay = (i * 90) + "ms";
+      h.style.setProperty("--dx", (Math.random() * 40 - 20).toFixed(0) + "px");
+      z.appendChild(h);
+      setTimeout(h.remove.bind(h), 1400 + i * 90);
+    }
+  }
+  function pet() {
+    var b = visible[current]; if (!b || !dlg.open) return;
+    pets[b.id] = petCount(b.id) + 1;
+    try { localStorage.setItem(PET_KEY, JSON.stringify(pets)); } catch (e) {}
+    paintPets(b); hearts(); sfx("pet", b);
+    var a = $("dart"); a.classList.remove("petted"); void a.offsetWidth; a.classList.add("petted");
+    if (pets[b.id] === PET_LOVE) setTimeout(function () { toast("🥰 " + b.name + " loves you! " + PET_LOVE + " pets, best friends!"); sfx("yay"); }, 250);
+  }
   var visible = [], current = -1;
 
   // pre-render art once
@@ -165,7 +204,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b);
+    paintFav($("dfav"), b); meet(b); paintPets(b); $("dart").classList.remove("petted");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -230,6 +269,8 @@
   function step(d) { if (visible.length && !busy) openDlg((current + d + visible.length) % visible.length); }
   $("dprev").onclick = function () { step(-1); }; $("dnext").onclick = function () { step(1); };
   $("dclose").onclick = closeDlg;
+  $("dpet").onclick = pet;
+  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); });
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
   dlg.addEventListener("cancel", function (e) { e.preventDefault(); closeDlg(); });
@@ -240,6 +281,7 @@
     var c = document.querySelector('.card[data-id="' + (visible[current] || {}).id + '"]'); if (c) c.focus({ preventScroll: true }); });
   dlg.addEventListener("keydown", function (e) {
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
+    if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
     if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
     else if (e.key === "+" || e.key === "=") zoomBy(1.5); else if (e.key === "-" || e.key === "_") zoomBy(1 / 1.5); else if (e.key === "0") zReset();
   });
@@ -414,6 +456,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); } };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
