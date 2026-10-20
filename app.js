@@ -90,14 +90,15 @@
     $("dpet").setAttribute("aria-label", "Give " + b.name + " pets (P)");
     $("dpetn").textContent = petText(b);
   }
-  function hearts() {
+  function hearts(set) {
+    set = set || HEARTS;
     if (reduced.matches) return;
     var z = $("zoom"), old = z.querySelectorAll(".pheart");
     for (var k = 0; k < old.length - 9; k++) old[k].remove();
     for (var i = 0; i < 3; i++) {
       var h = document.createElement("span");
       h.className = "pheart"; h.setAttribute("aria-hidden", "true");
-      h.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+      h.textContent = set[Math.floor(Math.random() * set.length)];
       h.style.left = (22 + Math.random() * 56) + "%";
       h.style.animationDelay = (i * 90) + "ms";
       h.style.setProperty("--dx", (Math.random() * 40 - 20).toFixed(0) + "px");
@@ -113,10 +114,87 @@
     var a = $("dart"); a.classList.remove("petted"); void a.offsetWidth; a.classList.add("petted");
     if (pets[b.id] === PET_LOVE) setTimeout(function () { toast("🥰 " + b.name + " loves you! " + PET_LOVE + " pets, best friends!"); sfx("yay"); }, 250);
   }
+  // ---------- Dress up: pick a collar and a bow colour for each pup (saved in localStorage) ----------
+  var OUTFIT_KEY = "puppyPals.outfits", outfits = {}, SLOTS = ["collar", "bow"];
+  var DRESS = [["none", "No", ""], ["pink", "Pink", "#ff7aa8"], ["mint", "Mint", "#4fd1a1"], ["sky", "Sky blue", "#5fb2ff"], ["lilac", "Lilac", "#b38cff"], ["sunny", "Sunny yellow", "#ffcc3d"]];
+  var DRESS_HEX = {}, DRESS_NAME = {}; DRESS.forEach(function (c) { DRESS_HEX[c[0]] = c[2]; DRESS_NAME[c[0]] = c[1]; });
+  try { outfits = JSON.parse(localStorage.getItem(OUTFIT_KEY) || "{}"); } catch (e) { outfits = {}; }
+  if (!outfits || typeof outfits !== "object" || Array.isArray(outfits)) outfits = {};
+  Object.keys(outfits).forEach(function (id) {
+    var o = outfits[id], ok = {};
+    if (o && typeof o === "object" && B.some(function (b) { return b.id === id; })) SLOTS.forEach(function (s) { if (typeof o[s] === "string" && DRESS_HEX.hasOwnProperty(o[s])) ok[s] = o[s]; });
+    if (Object.keys(ok).length) outfits[id] = ok; else delete outfits[id];
+  });
+  function saveOutfits() { try { localStorage.setItem(OUTFIT_KEY, JSON.stringify(outfits)); } catch (e) {} }
+  // the breed with its outfit applied (same id, so the art's random marks stay identical)
+  function dressed(b) {
+    var o = outfits[b.id]; if (!o) return b;
+    var look = {}, k; for (k in b.look) look[k] = b.look[k];
+    SLOTS.forEach(function (s) { if (o[s]) look[s] = o[s] === "none" ? false : DRESS_HEX[o[s]]; });
+    var d = {}; for (k in b) d[k] = b[k]; d.look = look; return d;
+  }
+  function buildDress() {
+    SLOTS.forEach(function (slot) {
+      var box = $("d" + slot);
+      DRESS.forEach(function (c) {
+        var sw = document.createElement("button");
+        sw.type = "button"; sw.className = "sw" + (c[0] === "none" ? " none" : ""); sw.dataset.slot = slot; sw.dataset.v = c[0];
+        sw.setAttribute("aria-pressed", "false"); sw.title = c[1] + " " + slot;
+        sw.setAttribute("aria-label", c[1] + " " + slot);
+        if (c[2]) sw.style.setProperty("--c", c[2]);
+        sw.onclick = function () { var b = visible[current]; if (b) wear(b, slot, c[0]); };
+        box.appendChild(sw);
+      });
+    });
+  }
+  function paintDress(b) {
+    var o = outfits[b.id] || {};
+    document.querySelectorAll("#dress .sw").forEach(function (sw) { sw.setAttribute("aria-pressed", o[sw.dataset.slot] === sw.dataset.v ? "true" : "false"); });
+    $("dclassic").setAttribute("aria-pressed", outfits[b.id] ? "false" : "true");
+    $("dsurprise").setAttribute("aria-label", "Surprise outfit for " + b.name + " (D)");
+  }
+  function outfitText(b) {
+    var o = outfits[b.id];
+    if (!o) return b.name + " is back in the classic look.";
+    var bits = SLOTS.filter(function (s) { return o[s]; }).map(function (s) { return o[s] === "none" ? "no " + s : "a " + DRESS_NAME[o[s]].toLowerCase() + " " + s; });
+    return b.name + " is wearing " + bits.join(" and ") + ".";
+  }
+  function redress(b) {
+    ART[b.id] = DogArt.svg(dressed(b));
+    var a = cardArt(b); if (a) a.innerHTML = ART[b.id];
+    if ($("potd").dataset.id === b.id) $("potdart").innerHTML = DogArt.svg(dressed(b), { id: "potd-" + b.id, title: false });
+    if (dlg.open && visible[current] === b) {
+      $("dart").innerHTML = DogArt.svg(dressed(b), { id: "big-" + b.id });
+      applyZ(false); // keep the current zoom
+      paintDress(b);
+      $("dresslive").textContent = outfitText(b);
+      var z = $("dart"); z.classList.remove("petted", "dressing"); void z.offsetWidth; z.classList.add("dressing");
+      hearts(SPARKLES); sfx("pop");
+    }
+  }
+  function wear(b, slot, v) {
+    var o = {}, k, cur = outfits[b.id] || {};
+    for (k in cur) o[k] = cur[k];
+    if (v == null || o[slot] === v) delete o[slot]; else o[slot] = v;
+    if (Object.keys(o).length) outfits[b.id] = o; else delete outfits[b.id];
+    saveOutfits(); redress(b);
+  }
+  function surprise() {
+    var b = visible[current]; if (!b || !dlg.open) return;
+    var cur = outfits[b.id] || {}, cols = DRESS.slice(1).map(function (c) { return c[0]; }), o;
+    for (var t = 0; t < 20; t++) {
+      o = { collar: cols[Math.floor(Math.random() * cols.length)], bow: cols[Math.floor(Math.random() * cols.length)] };
+      if (o.collar !== cur.collar || o.bow !== cur.bow) break;
+    }
+    outfits[b.id] = o; saveOutfits(); redress(b);
+  }
+  function classic() { var b = visible[current]; if (!b || !dlg.open || !outfits[b.id]) return; delete outfits[b.id]; saveOutfits(); redress(b); }
+  var SPARKLES = ["✨", "🎀", "⭐", "💖"];
   var visible = [], current = -1;
 
   // pre-render art once
-  var ART = {}; B.forEach(function (b) { ART[b.id] = DogArt.svg(b); });
+  var ART = {}; B.forEach(function (b) { ART[b.id] = DogArt.svg(dressed(b)); });
+  buildDress();
   $("total").textContent = B.length;
 
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -200,11 +278,11 @@
   function cardArt(b) { var c = b && document.querySelector('.card[data-id="' + b.id + '"]'); return c ? c.querySelector(".art") : null; }
   function fill(b) {
     zReset(true);
-    $("dart").innerHTML = DogArt.svg(b, { id: "big-" + b.id });
+    $("dart").innerHTML = DogArt.svg(dressed(b), { id: "big-" + b.id });
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); $("dart").classList.remove("petted");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintDress(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -214,7 +292,7 @@
     var f = document.createElement("div");
     f.className = "fly"; f.setAttribute("aria-hidden", "true");
     f.style.cssText = "left:" + to.left + "px;top:" + to.top + "px;width:" + to.width + "px;height:" + to.height + "px";
-    f.innerHTML = DogArt.svg(b, { id: "fly-" + b.id, title: false });
+    f.innerHTML = DogArt.svg(dressed(b), { id: "fly-" + b.id, title: false });
     dlg.appendChild(f); // inside the dialog so it renders in the top layer
     var inv = "translate(" + (from.left - to.left) + "px," + (from.top - to.top) + "px) scale(" + (from.width / to.width) + "," + (from.height / to.height) + ")";
     var an = f.animate([{ transform: inv }, { transform: "none" }], { duration: dur, easing: EASE });
@@ -256,7 +334,7 @@
     var cl = document.createElement("div");
     cl.className = "fly"; cl.setAttribute("aria-hidden", "true");
     cl.style.cssText = "left:" + to.left + "px;top:" + to.top + "px;width:" + to.width + "px;height:" + to.height + "px";
-    cl.innerHTML = DogArt.svg(b, { id: "fly-" + b.id, title: false });
+    cl.innerHTML = DogArt.svg(dressed(b), { id: "fly-" + b.id, title: false });
     dlg.appendChild(cl);
     var inv = "translate(" + (from.left - to.left) + "px," + (from.top - to.top) + "px) scale(" + (from.width / to.width) + "," + (from.height / to.height) + ")";
     cl.animate([{ transform: inv }, { transform: "none" }], { duration: D, easing: EASE, fill: "forwards" }).finished.then(done, done);
@@ -270,7 +348,8 @@
   $("dprev").onclick = function () { step(-1); }; $("dnext").onclick = function () { step(1); };
   $("dclose").onclick = closeDlg;
   $("dpet").onclick = pet;
-  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); });
+  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); });
+  $("dsurprise").onclick = surprise; $("dclassic").onclick = classic;
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
   dlg.addEventListener("cancel", function (e) { e.preventDefault(); closeDlg(); });
@@ -282,6 +361,7 @@
   dlg.addEventListener("keydown", function (e) {
     if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) { $("dfav").click(); return; }
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
+    if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
     else if (e.key === "+" || e.key === "=") zoomBy(1.5); else if (e.key === "-" || e.key === "_") zoomBy(1 / 1.5); else if (e.key === "0") zReset();
   });
@@ -428,7 +508,7 @@
   }
   (function potd() {
     var key = dayKey(), b = pupOfDay(key);
-    $("potdart").innerHTML = DogArt.svg(b, { id: "potd-" + b.id, title: false });
+    $("potdart").innerHTML = DogArt.svg(dressed(b), { id: "potd-" + b.id, title: false });
     $("potdname").textContent = b.name;
     $("potdinfo").textContent = "📍 " + b.origin + " · " + b.traits.join(", ");
     $("potddate").textContent = new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" });
@@ -456,6 +536,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); } };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
