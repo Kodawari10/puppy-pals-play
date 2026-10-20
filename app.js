@@ -400,6 +400,7 @@
     if ((e.key === "p" || e.key === "P") && !e.ctrlKey && !e.metaKey && !e.altKey) { pet(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
+    if ((e.key === "l" || e.key === "L") && !e.ctrlKey && !e.metaKey && !e.altKey) { share(); return; }
     if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
     else if (e.key === "+" || e.key === "=") zoomBy(1.5); else if (e.key === "-" || e.key === "_") zoomBy(1 / 1.5); else if (e.key === "0") zReset();
   });
@@ -421,6 +422,36 @@
     });
   }
   $("dsticker").onclick = sticker;
+  // ---------- 🔗 share a link that opens straight to this pup (clean URL: no filters, just #id) ----------
+  function shareUrl(b) { return location.href.split("#")[0].split("?")[0] + "#" + b.id; }
+  function copyText(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) return navigator.clipboard.writeText(t).catch(function () { return legacyCopy(t); });
+    return legacyCopy(t);
+  }
+  function legacyCopy(t) {
+    return new Promise(function (ok, no) {
+      var ta = document.createElement("textarea"); ta.value = t; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+      dlg.appendChild(ta); ta.select(); var done = false; try { done = document.execCommand("copy"); } catch (e) {} ta.remove();
+      if (done) ok(); else no(new Error("copy failed"));
+    });
+  }
+  var shareBusy = false;
+  function share() {
+    var b = visible[current], btn = $("dshare");
+    if (!b || !dlg.open || shareBusy) return;
+    var url = shareUrl(b), nick = nickOf(b.id);
+    var text = (nick ? "Meet " + nick + " the " + b.name : "Meet the " + b.name) + " on Puppy Pals! 🐾";
+    var touch = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+    shareBusy = true; btn.disabled = true;
+    var p = (touch && navigator.share) ? navigator.share({ title: b.name + " · Puppy Pals", text: text, url: url }).then(function () { return "shared"; }, function (e) { if (e && e.name === "AbortError") return "cancelled"; return copyText(url).then(function () { return "copied"; }); })
+      : copyText(url).then(function () { return "copied"; });
+    p.then(function (r) {
+      if (r === "copied") toast("🔗 Link to " + b.name + " copied!");
+      else if (r === "shared") toast("💌 " + b.name + " shared!");
+      if (r !== "cancelled") { hearts(["🔗", "💌", "💖"]); sfx("pop"); }
+    }, function () { toast("😿 Couldn't copy the link: " + url); }).then(function () { shareBusy = false; btn.disabled = false; });
+  }
+  $("dshare").onclick = share;
   $("zoom").addEventListener("animationend", function (e) { if (e.animationName === "snapflash") $("zoom").classList.remove("flash"); });
 
   // ---------- in-dialog zoom/pan: edits the SVG viewBox so it stays vector-crisp ----------
@@ -550,7 +581,9 @@
   })();
   $("emptydog").innerHTML = DogArt.svg({ id: "empty-pug", name: "Confused pug", look: { ears: "rose", earColor: "#2d2424", head: "wide", muzzle: "short", muzzleColor: "#3a2f2f", tail: "curl", coat: { base: "#e9cfa1", light: "#f3e2c3" }, eyes: { size: 1.1, droopy: true }, wrinkles: true } });
   render();
-  if (location.hash) { var i = visible.findIndex(function (b) { return "#" + b.id === location.hash; }); if (i >= 0) openDlg(i); }
+  function openFromHash() { var id = decodeURIComponent(location.hash.slice(1)); if (id && B.some(function (b) { return b.id === id; })) openBreed(id); }
+  openFromHash();
+  window.addEventListener("hashchange", function () { if (!dlg.open) openFromHash(); });
   // ---------- Pup of the Day: the same pup for everyone on a given local date ----------
   function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
   function pupOfDay(key) {
@@ -593,6 +626,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();

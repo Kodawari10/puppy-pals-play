@@ -255,6 +255,10 @@ dialog.pairs[open]{max-width:min(520px,96vw)}
 .petbtn.stk:hover,.petbtn.stk:focus-visible{box-shadow:0 5px 0 #6e5ce0,0 0 0 4px #8f7bff33}
 .petbtn.stk:active{box-shadow:0 1px 0 #6e5ce0}
 .petbtn.stk:disabled{opacity:.75;cursor:progress}
+.petbtn.shr{background:linear-gradient(135deg,#7fdcc3,#3fbf9f);box-shadow:0 4px 0 #2a9c80}
+.petbtn.shr:hover,.petbtn.shr:focus-visible{box-shadow:0 5px 0 #2a9c80,0 0 0 4px #3fbf9f33}
+.petbtn.shr:active{box-shadow:0 1px 0 #2a9c80}
+.petbtn.shr:disabled{opacity:.75;cursor:progress}
 .zoom.flash::after{content:"";position:absolute;inset:0;border-radius:inherit;background:#fff;pointer-events:none;animation:snapflash .45s ease-out forwards}
 @keyframes snapflash{0%{opacity:.9}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.zoom.flash::after{animation-duration:.01s}}
