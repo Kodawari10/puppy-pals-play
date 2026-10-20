@@ -10,6 +10,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">34</span> dog breeds. Tap a pup to learn more!</p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span></p>
 </header>
 
 <section class="controls" aria-label="Filter breeds">
@@ -75,9 +76,28 @@
   </div>
 </dialog>
 
+<dialog id="quiz" class="quiz" aria-labelledby="qtitle">
+  <button class="close" id="qclose" aria-label="Close quiz">×</button>
+  <h2 id="qtitle" class="qtitle">Guess the Pup!</h2>
+  <div class="qtrack" aria-hidden="true"><div class="qbar" id="qbar"></div></div>
+  <div id="qplay">
+    <div class="qhud"><span id="qprog"></span><span id="qscore" class="qscore"></span></div>
+    <div class="qart" id="qart" role="img" aria-label="Mystery dog breed"></div>
+    <div class="qopts" id="qopts" role="group" aria-label="Which breed is this?"></div>
+    <p class="qfb" id="qfb" aria-live="polite"></p>
+    <button id="qnext" class="qnext" type="button" hidden>Next pup →</button>
+  </div>
+  <div id="qdone" class="qdone" hidden>
+    <p class="qfinal" id="qfinal"></p>
+    <p id="qmsg" aria-live="polite"></p>
+    <button id="qagain" class="qnext" type="button">Play again 🐾</button>
+  </div>
+</dialog>
+
 <footer>Every pup is drawn by one parametric SVG generator (<code>dogs.js</code>) from the data in <code>breeds.js</code>.</footer>
 <script src="dogs.js"></script>
 <script src="breeds.js"></script>
 <script src="app.js"></script>
+<script src="quiz.js"></script>
 </body>
 </html>
