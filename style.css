@@ -588,3 +588,13 @@ html[data-theme=night] .friend .fn{color:#d3b6c6}
 @media (max-width:380px){.stile{width:40px;height:46px;font-size:1.15rem}.sslot{width:27px;height:36px;font-size:1.1rem}}
 [data-theme=night] .sslot{background:#2b2440;color:#fff}[data-theme=night] .sslot.full{background:#3a2a4a}[data-theme=night] .sslot.hint{background:#3d3420;color:#ffd28a}
 @media (prefers-reduced-motion:reduce){.sslot.full,.sslots.wrong .sslot{animation:none}}
+
+/* Nap time */
+.petbtn.nap{background:linear-gradient(135deg,#b9a8ff,#8a7ae6);box-shadow:0 4px 0 #6a5ac8}
+.petbtn.nap:hover,.petbtn.nap:focus-visible{box-shadow:0 5px 0 #6a5ac8,0 0 0 4px #8a7ae633}
+.petbtn.nap:active{box-shadow:0 1px 0 #6a5ac8}
+.petn.napn{color:#6a5ac8}
+html[data-theme=night] .petn.napn{color:#cfc4ff}
+.zart.napping svg{animation:napbreathe 1.1s ease-in-out 3;transform-origin:50% 90%;filter:saturate(.75) brightness(.93)}
+@keyframes napbreathe{0%,100%{transform:scale(1,1) rotate(-4deg)}50%{transform:scale(1.03,.96) rotate(-4deg) translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.zart.napping svg{animation-duration:.01s}}
