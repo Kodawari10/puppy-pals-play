@@ -347,6 +347,23 @@
     $("potdbtn").onclick = function () { openBreed(b.id); };
     $("potdart").onclick = function () { openBreed(b.id); };
   })();
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed };
+  // ---------- offline / installable app (service worker only runs over http(s), not file://) ----------
+  var toastT;
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.hidden = false;
+    t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
+    clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("show"); toastT = setTimeout(function () { t.hidden = true; }, 300); }, 3200);
+  }
+  window.addEventListener("offline", function () { document.body.classList.add("offline"); toast("📴 You're offline, but the pups are still here!"); });
+  window.addEventListener("online", function () { document.body.classList.remove("offline"); toast("🌈 Back online!"); });
+  if (navigator.onLine === false) document.body.classList.add("offline");
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    var firstInstall = !navigator.serviceWorker.controller;
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      var w = reg.installing; if (!w || !firstInstall) return;
+      w.addEventListener("statechange", function () { if (w.state === "activated") toast("🐾 Puppy Pals now works offline!"); });
+    }).catch(function () {});
+  }
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();

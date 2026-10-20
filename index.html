@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puppy Pals: Cute Dog Breed Gallery</title>
+<meta name="theme-color" content="#ff7aa8">
+<meta name="description" content="A kawaii gallery of dog breeds with favorites, a Pup of the Day and a Guess the Pup quiz.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Puppy Pals">
+<script>/* the app manifest only loads over http(s); opening index.html from disk stays error-free */if(/^https?:$/.test(location.protocol)){var m=document.createElement("link");m.rel="manifest";m.href="manifest.webmanifest";document.head.appendChild(m);}</script>
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -102,6 +111,8 @@
     <button id="qagain" class="qnext" type="button">Play again 🐾</button>
   </div>
 </dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <footer>Every pup is drawn by one parametric SVG generator (<code>dogs.js</code>) from the data in <code>breeds.js</code>.</footer>
 <script src="dogs.js"></script>
