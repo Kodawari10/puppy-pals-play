@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puppy Pals: Cute Dog Breed Gallery</title>
 <meta name="theme-color" content="#ff7aa8">
-<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, dress-up outfits, nicknames and photo stickers for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Guess the Pup quiz, a Pup Pairs memory game and a cosy night mode.">
+<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, dress-up outfits, nicknames and photo stickers for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Treat Catch mini-game, a Guess the Pup quiz, a Pup Pairs memory game and a cosy night mode.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Puppy Pals">
@@ -20,7 +20,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">40</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="passport" id="passport" aria-label="Pup Passport">
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">40</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
@@ -181,6 +181,27 @@
   <button id="crandom" class="qnext" type="button" title="Random pair (R)">🎲 Random pair</button>
 </dialog>
 
+<dialog id="catch" class="quiz catch" aria-labelledby="ktitle">
+  <button class="close" id="kclose" aria-label="Close Treat Catch">×</button>
+  <h2 id="ktitle" class="qtitle">Treat Catch! 🦴</h2>
+  <div class="qtrack" aria-hidden="true"><div class="qbar kbar" id="kbar"></div></div>
+  <div id="kplay">
+    <div class="qhud"><span id="ktime"></span><span id="khearts" role="img"></span><span id="kscore" class="qscore"></span></div>
+    <div class="kstage" id="kstage" tabindex="0" role="group" aria-label="Treat Catch play area. Drag, or use the left and right arrow keys, to move your pup." aria-describedby="khint">
+      <div class="kpup" id="kpup" role="img"></div>
+    </div>
+    <div class="kpad"><button id="kleft" class="kmove" type="button" aria-label="Move left">◀</button><button id="kright" class="kmove" type="button" aria-label="Move right">▶</button></div>
+    <p class="qfb" id="kfb" aria-live="polite"></p>
+    <p class="chint" id="khint">Drag, tap the arrows or use ← → · 🦴🍖 +1 · 🍡 +2 · ⭐ +3 · skip 🍫🍇</p>
+  </div>
+  <div id="kdone" class="qdone" hidden>
+    <div class="qart kart" id="kart" aria-hidden="true"></div>
+    <p class="qfinal" id="kfinal"></p>
+    <p id="kmsg" aria-live="polite"></p>
+    <button id="kagain" class="qnext" type="button">Play again 🦴</button>
+  </div>
+</dialog>
+
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <footer>Every pup is drawn by one parametric SVG generator (<code>dogs.js</code>) from the data in <code>breeds.js</code>.</footer>
@@ -194,5 +215,6 @@
 <script src="sticker.js"></script>
 <script src="match.js"></script>
 <script src="compare.js"></script>
+<script src="catch.js"></script>
 </body>
 </html>

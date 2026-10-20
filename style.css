@@ -361,3 +361,36 @@ html[data-theme=night] .pcard.got .pface{background:#21483a}
 html[data-theme=night] .qk{color:#ffb3cf}
 html[data-theme=night] code{color:#ffd9ec}
 html[data-theme=night] .pface{background:linear-gradient(#f7f0ff,#fff3f8);color:#4a3434}html[data-theme=night] .pface .pname{color:#8a6f6f}
+
+/* 🦴 Treat Catch */
+.catchbtn{background:linear-gradient(135deg,#ffc36e,#ff9f7a 60%,#ff8fb4);box-shadow:0 6px 0 #e07d55,0 10px 20px #ff9f7a44}
+.catchbtn:hover,.catchbtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #e07d55,0 0 0 4px #ff9f7a33}
+.catchbtn:active{box-shadow:0 3px 0 #e07d55}
+.kbar{background:linear-gradient(90deg,#ffd59a,#ff9f7a)}
+#khearts{letter-spacing:1px}
+.kstage{position:relative;height:min(330px,52vh);margin:10px 0 0;border-radius:20px 20px 0 0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;
+  background:radial-gradient(circle at 18% 14%,#fff 0 7%,transparent 7.5%),radial-gradient(circle at 80% 22%,#fff 0 5%,transparent 5.5%),linear-gradient(#ffeef4,#fff6e8 80%);border-bottom:8px solid #b8e3c8}
+.kstage:focus-visible{outline:3px solid #ff9f7a;outline-offset:2px}
+.kstage.hurt{animation:khurt .4s ease}
+@keyframes khurt{0%,100%{box-shadow:inset 0 0 0 0 #ff6b8b00}40%{box-shadow:inset 0 0 0 6px #ff6b8b88}}
+.ktreat{position:absolute;font-size:2rem;line-height:1;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 3px 2px #0002);animation:kspin 2.4s linear infinite}
+.ktreat.bad{filter:drop-shadow(0 0 4px #ff6b8b88)}
+@keyframes kspin{0%{rotate:-12deg}50%{rotate:12deg}100%{rotate:-12deg}}
+.kpup{position:absolute;bottom:0;left:50%;width:min(96px,24%);aspect-ratio:1;transform:translateX(-50%);transition:left .06s linear;pointer-events:none}
+.kpup svg{width:100%;height:100%;display:block}
+.kpup.left{transform:translateX(-50%) scaleX(-1)}
+.kpup.chomp svg.dog{animation:jump .35s ease}
+.kpup.yuck svg.dog{animation:shake .4s ease}
+.kpts{position:absolute;top:66%;transform:translateX(-50%);font-weight:900;color:#ff7aa8;font-size:1.2rem;pointer-events:none;animation:kpts .7s ease-out forwards}
+@keyframes kpts{from{opacity:1;translate:0 0}to{opacity:0;translate:0 -46px}}
+.kpad{display:flex;gap:10px;margin:10px 0 0}
+.kmove{flex:1;font:inherit;font-size:1.4rem;font-weight:900;min-height:52px;border:0;border-radius:18px;background:#fff1e6;color:#e07d55;box-shadow:0 4px 0 #f6cdb4;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+.kmove:active{transform:translateY(3px);box-shadow:0 1px 0 #f6cdb4}
+.kmove:focus-visible{outline:0;box-shadow:0 4px 0 #f6cdb4,0 0 0 4px #ff9f7a44}
+@media (hover:hover) and (pointer:fine){.kpad{display:none}}
+.kart{border-color:#ffd0b4;background:radial-gradient(circle,#fff 55%,#fff1e6)}
+.kart svg.dog{animation:jump .55s ease 2,hop .9s ease-in-out 1.1s infinite}
+html[data-theme=night] .kstage{background:radial-gradient(circle at 18% 14%,#fff8 0 1.2%,transparent 1.6%),radial-gradient(circle at 70% 10%,#fff8 0 1%,transparent 1.4%),radial-gradient(circle at 85% 30%,#fff6 0 .9%,transparent 1.3%),linear-gradient(#2a3366,#3b2f5a 80%);border-bottom-color:#4f8f6a}
+html[data-theme=night] .kmove{background:#3b2f5a;color:#ffc36e;box-shadow:0 4px 0 #241c3a}
+html[data-theme=night] .kart{background:radial-gradient(circle,#efe9ff 55%,#d9cff5)}
+@media (prefers-reduced-motion:reduce){.kpup{transition:none}}
