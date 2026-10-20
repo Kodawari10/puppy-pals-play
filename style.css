@@ -518,3 +518,14 @@ html[data-theme=night] .wpanel{background:linear-gradient(180deg,#26345a,#2b2442
 html[data-theme=night] .wpup .wart{background:radial-gradient(circle,#fff7fb 55%,#efe6ff)}
 html[data-theme=night] .whi{color:#8fd3ff}
 @media (prefers-reduced-motion:reduce){.wpanel.wpop{animation:none}.wflag,.wpup{transition:none}}
+
+/* Read aloud */
+.readrow{margin:-6px 0 14px}
+.readbtn{font:inherit;font-weight:800;border:2px solid #c9b6f2;background:#f3edff;color:#6a4fb3;border-radius:999px;padding:8px 14px;min-height:40px;cursor:pointer}
+.readbtn:hover{background:#e9dfff}.readbtn:focus-visible{outline:3px solid #b79cf0;outline-offset:2px}
+.readbtn.on{background:#6a4fb3;color:#fff;border-color:#6a4fb3;animation:readpulse 1.2s ease-in-out infinite}
+@keyframes readpulse{50%{box-shadow:0 0 0 6px rgba(140,110,220,.25)}}
+html[data-theme=night] .readbtn{background:#2e2747;color:#d9ccff;border-color:#5a4b8c}
+html[data-theme=night] .readbtn.on{background:#8f74e0;color:#fff}
+@media (max-width:480px){.readbtn{width:100%}}
+@media (prefers-reduced-motion:reduce){.readbtn.on{animation:none}}

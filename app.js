@@ -387,7 +387,7 @@
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
     paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintDress(b); paintNick(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing");
-    $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact;
+    $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact; if (typeof stopRead === "function") stopRead(); $("dreadlive").textContent = "";
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
   function inView(r) { return r.width > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth; }
@@ -462,6 +462,7 @@
   dlg.addEventListener("cancel", function (e) { e.preventDefault(); closeDlg(); });
   dlg.addEventListener("click", function (e) { if (e.target === dlg) closeDlg(); });
   dlg.addEventListener("close", function () {
+    stopRead();
     history.replaceState(null, "", qs() || location.pathname);
     if (pendingRender) { pendingRender = false; var keep = (visible[current] || {}).id; render(); current = visible.findIndex(function (b) { return b.id === keep; }); if (current < 0) { $("favonly").focus(); return; } }
     var c = document.querySelector('.card[data-id="' + (visible[current] || {}).id + '"]'); if (c) c.focus({ preventScroll: true }); });
@@ -475,6 +476,7 @@
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
     if ((e.key === "l" || e.key === "L") && !e.ctrlKey && !e.metaKey && !e.altKey) { share(); return; }
+    if ((e.key === "r" || e.key === "R") && !e.ctrlKey && !e.metaKey && !e.altKey) { readAloud(); return; }
     if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
     else if (e.key === "+" || e.key === "=") zoomBy(1.5); else if (e.key === "-" || e.key === "_") zoomBy(1 / 1.5); else if (e.key === "0") zReset();
   });
@@ -496,6 +498,33 @@
     });
   }
   $("dsticker").onclick = sticker;
+
+  // ---------- 🗣️ Read aloud: the browser's own voice reads the pup's name, home, traits and fun fact (R) ----------
+  var reading = null;
+  function synth() { return window.speechSynthesis && window.SpeechSynthesisUtterance ? window.speechSynthesis : null; }
+  function readText(b) {
+    var n = nickOf(b.id);
+    return b.name + (n ? ", nicknamed " + n : "") + ", from " + b.origin + ". " + b.traits.join(", ") + ". A " + b.size + " pup who weighs " + b.weight.replace("–", " to ") + " and lives " + b.life.replace("–", " to ").replace("yrs", "years") + ". Fun fact: " + b.fact;
+  }
+  function paintRead(on) {
+    var btn = $("dread"); btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.textContent = on ? "⏹️ Stop reading" : "🗣️ Read aloud"; btn.classList.toggle("on", !!on);
+  }
+  function stopRead() { var s = synth(); if (reading && s) { reading = null; s.cancel(); } reading = null; paintRead(false); }
+  function readAloud() {
+    var b = visible[current], s = synth(); if (!b || !dlg.open || !s) return;
+    if (reading) { stopRead(); $("dreadlive").textContent = "Stopped reading."; return; }
+    s.cancel();
+    var u = new SpeechSynthesisUtterance(readText(b)); u.lang = "en-US"; u.rate = 0.95; u.pitch = 1.25;
+    var vs = (s.getVoices && s.getVoices()) || [], v = vs.filter(function (x) { return /^en(-|_|$)/i.test(x.lang || ""); });
+    if (v.length) try { u.voice = v.filter(function (x) { return /female|samantha|zira|google us/i.test(x.name || ""); })[0] || v[0]; } catch (e) {}
+    u.onend = u.onerror = function () { if (reading === u) { reading = null; paintRead(false); } };
+    reading = u; paintRead(true); hearts(["🗣️", "🎶", "💬"]);
+    $("dreadlive").textContent = "Reading about " + b.name + " aloud.";
+    s.speak(u);
+  }
+  if (!synth()) $("dread").hidden = true;
+  $("dread").onclick = readAloud;
   // ---------- 🔗 share a link that opens straight to this pup (clean URL: no filters, just #id) ----------
   function shareUrl(b) { return location.href.split("#")[0].split("?")[0] + "#" + b.id; }
   function copyText(t) {
@@ -700,6 +729,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
