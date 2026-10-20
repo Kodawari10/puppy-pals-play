@@ -406,3 +406,28 @@ html[data-theme=night] .kstage{background:radial-gradient(circle at 18% 14%,#fff
 html[data-theme=night] .kmove{background:#3b2f5a;color:#ffc36e;box-shadow:0 4px 0 #241c3a}
 html[data-theme=night] .kart{background:radial-gradient(circle,#efe9ff 55%,#d9cff5)}
 @media (prefers-reduced-motion:reduce){.kpup{transition:none}}
+
+/* 🎵 Bark Along */
+.barkbtn{background:linear-gradient(135deg,#b9a2ff,#ff8fd0 60%,#ffb36e);box-shadow:0 6px 0 #9a74e0,0 10px 20px #b9a2ff44}
+.barkbtn:hover,.barkbtn:focus-visible{transform:translateY(-2px) rotate(1deg);box-shadow:0 8px 0 #9a74e0,0 0 0 4px #b9a2ff33}
+.barkbtn:active{box-shadow:0 3px 0 #9a74e0}
+.bbar{background:linear-gradient(90deg,#d6c8ff,#ff8fd0)}
+.bpads{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 0}
+.bpad{--c:#ffd0e2;--d:#ff7aa8;font:inherit;font-weight:800;font-size:.9rem;color:var(--ink);background:#fff;border:3px solid var(--c);border-radius:22px;padding:8px 6px 10px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-height:44px;box-shadow:0 5px 0 var(--c);transition:transform .1s,box-shadow .1s,background .15s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.bpad.sun{--c:#ffe1a1;--d:#ffb02e}.bpad.mint{--c:#bdeccf;--d:#3fbf7f}.bpad.lilac{--c:#dccfff;--d:#8f6cf0}
+.bpad .bart{width:min(110px,30vw);aspect-ratio:1;display:block}.bpad .bart svg{width:100%;height:100%;display:block}
+.bpad .bname{display:flex;align-items:center;gap:6px;line-height:1.1}
+.bpad:hover,.bpad:focus-visible{outline:0;border-color:var(--d)}
+.bpad:active{transform:translateY(3px);box-shadow:0 2px 0 var(--c)}
+.bpad.lit{background:var(--c);border-color:var(--d);box-shadow:0 5px 0 var(--d),0 0 0 6px color-mix(in srgb,var(--d) 30%,transparent);transform:scale(1.04)}
+.bpad.lit svg.dog{animation:jump .4s ease}
+.bpad.miss{background:#ffeef3;border-color:#ff6b8b;animation:shake .4s ease}
+.bpads.listening .bpad{cursor:wait}
+.bart2{border-color:#dccfff;background:radial-gradient(circle,#fff 55%,#f3edff)}
+.bart2 svg.dog{animation:jump .55s ease 2,hop .9s ease-in-out 1.1s infinite}
+html[data-theme=night] .bpad{background:var(--card);color:var(--ink)}
+html[data-theme=night] .bpad .bart{background:radial-gradient(circle,#fff7fb 55%,#efe6ff);border-radius:16px}
+html[data-theme=night] .bpad.lit{background:#4a3d6e}
+html[data-theme=night] .bart2{background:radial-gradient(circle,#efe9ff 55%,#d9cff5)}
+@media (prefers-reduced-motion:reduce){.bpad.lit{transform:none}.bpad.lit svg.dog,.bpad.miss{animation:none}}
