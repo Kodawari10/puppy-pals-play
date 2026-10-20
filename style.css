@@ -431,3 +431,31 @@ html[data-theme=night] .bpad .bart{background:radial-gradient(circle,#fff7fb 55%
 html[data-theme=night] .bpad.lit{background:#4a3d6e}
 html[data-theme=night] .bart2{background:radial-gradient(circle,#efe9ff 55%,#d9cff5)}
 @media (prefers-reduced-motion:reduce){.bpad.lit{transform:none}.bpad.lit svg.dog,.bpad.miss{animation:none}}
+
+/* 🏆 Trophy shelf */
+.trophybtn{color:#5a3418;background:linear-gradient(135deg,#ffd36e,#ffb36e 55%,#ff9bb8);box-shadow:0 6px 0 #e0a040,0 10px 20px #ffd36e44}
+.trophybtn:hover,.trophybtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #e0a040,0 0 0 4px #ffd36e44}
+.trophybtn:active{box-shadow:0 3px 0 #e0a040}
+.trophybtn .tn{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:999px;background:#fff8;font-size:.8em}
+dialog.trophies[open]{max-width:min(560px,96vw)}
+.tcount{margin:2px 0 8px;font-weight:800;color:var(--soft)}
+.tfill{background:linear-gradient(90deg,#ffd36e,#ffb36e,var(--pink))}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:6px 0 4px}
+.trophy{font:inherit;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px 10px;border-radius:20px;
+  border:2px dashed var(--line);background:var(--card);cursor:pointer;min-height:132px;transition:transform .15s,box-shadow .15s}
+.trophy:hover,.trophy:focus-visible{transform:translateY(-2px);box-shadow:0 6px 16px #ff7aa833;outline:0;border-color:var(--pink)}
+.trophy .ticon{font-size:2rem;line-height:1.1;filter:grayscale(1);opacity:.55}
+.trophy .tname{font-weight:900;font-size:.95rem}
+.trophy .thow{font-size:.78rem;color:var(--soft);font-weight:700;line-height:1.25}
+.trophy .tprog{width:80%;height:7px;border-radius:999px;background:var(--pinkbg);overflow:hidden;margin-top:auto}
+.trophy .tprog span{display:block;height:100%;background:linear-gradient(90deg,#ffb3c6,var(--pink));border-radius:999px}
+.trophy .tnum{font-size:.75rem;font-weight:800;color:var(--soft)}
+.trophy.got{border-style:solid;border-color:#ffd36e;background:linear-gradient(160deg,#fff8e1,#ffeef4)}
+.trophy.got .ticon{filter:none;opacity:1;animation:tshine 2.4s ease-in-out infinite}
+.trophy .tok{margin-top:auto;font-size:.75rem;font-weight:900;color:#c98a1a;background:#fff3c9;border-radius:999px;padding:2px 9px}
+@keyframes tshine{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(-6deg) scale(1.08)}}
+@media (max-width:420px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.trophy{min-height:124px;padding:10px 6px 8px}}
+@media (prefers-reduced-motion:reduce){.trophy.got .ticon{animation:none}}
+html[data-theme=night] .trophy{background:var(--card)}
+html[data-theme=night] .trophy.got{background:linear-gradient(160deg,#3d3528,#3a2c3c);border-color:#ffd38a}
+html[data-theme=night] .trophy .tok{background:#4a3d2a;color:#ffd38a}
