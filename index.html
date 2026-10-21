@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Puppy Pals: Cute Dog Breed Gallery</title>
 <meta name="theme-color" content="#ff7aa8">
-<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, pets, bubbly baths, cosy naps, tricks to teach, dress-up outfits, nicknames, photo stickers and share links for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Treat Catch mini-game, a Guess the Pup quiz, a Pup Scramble spelling game, a Pup Pairs memory game, a Pups around the world country explorer, read-aloud pup facts, friendship hearts for every pup, a Trophy shelf of badges to earn and a cosy night mode.">
+<meta name="description" content="A kawaii gallery of dog breeds with favorites, cute sounds, a Pup of the Day, a Pup Passport to collect, a daily visit streak, pets, bubbly baths, cosy naps, tricks to teach, dress-up outfits, nicknames, photo stickers and share links for every pup, a Which pup are you? personality quiz, a Size up side-by-side comparer, a Treat Catch mini-game, a Guess the Pup quiz, a Pup Scramble spelling game, a Pup Pairs memory game, a Pups around the world country explorer, read-aloud pup facts, friendship hearts for every pup, a Trophy shelf of badges to earn and a cosy night mode.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Puppy Pals">
@@ -25,6 +25,7 @@
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">40</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
     <button id="meetbtn" class="meetbtn" type="button">Meet a new pup 🎲</button>
+    <p class="streak" id="streak" role="status"><span class="sflame" aria-hidden="true">🔥</span> <b id="streakn">1</b> <span id="streakd">day</span> streak <span class="spaws" id="streakpaws" aria-hidden="true"></span> <span class="sbest" id="streakbest"></span></p>
   </section>
   <section class="potd" id="potd" aria-labelledby="potdk">
     <div class="potdart" id="potdart" aria-hidden="true"></div>
@@ -291,5 +292,6 @@
 <script src="trophies.js"></script>
 <script src="world.js"></script>
 <script src="scramble.js"></script>
+<script src="streak.js"></script>
 </body>
 </html>
