@@ -613,3 +613,29 @@ html[data-theme=night] .petn.napn{color:#cfc4ff}
 @keyframes spop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
 html[data-theme=night] .sbest{background:#3a2f4a}
 @media (prefers-reduced-motion:reduce){.streak.hot .sflame,.streak.pop{animation:none}}
+
+/* 🌷 Peekaboo Pups */
+.peekbtn{background:linear-gradient(135deg,#ffa6c9,#ffc6a8 55%,#b9e88f);box-shadow:0 6px 0 #e07aa0,0 10px 20px #ffa6c944}
+.peekbtn:hover,.peekbtn:focus-visible{transform:translateY(-2px) rotate(1deg);box-shadow:0 8px 0 #e07aa0,0 0 0 4px #ffa6c933}
+.peekbtn:active{box-shadow:0 3px 0 #e07aa0}
+dialog.peek[open]{max-width:min(440px,96vw)}
+.pkbar{background:linear-gradient(90deg,#b9e88f,#ffa6c9)}
+.pkgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 4px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.pkhole{position:relative;aspect-ratio:1;border:0;border-radius:50% 50% 22px 22px;padding:0;overflow:hidden;cursor:pointer;
+  background:radial-gradient(ellipse at 50% 92%,#7a5a4a 0 26%,#9c7660 27% 34%,transparent 35%),linear-gradient(#e9fbe1,#d3f3c4);box-shadow:inset 0 -6px 0 #b8e3a0}
+.pkhole:focus-visible{outline:3px solid #ff8fb4;outline-offset:2px}
+.pkwho{position:absolute;left:50%;bottom:10%;width:78%;aspect-ratio:1;transform:translate(-50%,105%);transition:transform .16s cubic-bezier(.3,1.6,.5,1)}
+.pkhole.up .pkwho{transform:translate(-50%,8%)}
+.pkwho svg{width:100%;height:100%;display:block}
+.pkbush{position:absolute;left:50%;bottom:-6%;transform:translateX(-50%);font-size:clamp(1.6rem,8vw,2.4rem);line-height:1;pointer-events:none;filter:drop-shadow(0 2px 1px #0002)}
+.pkn{position:absolute;top:6px;left:9px;font-size:.7rem;font-weight:800;color:#8fbf7a}
+.pkbee{display:block;font-size:clamp(2rem,11vw,3rem);text-align:center;line-height:1.6;animation:pkbuzz .3s ease-in-out infinite alternate}
+@keyframes pkbuzz{from{translate:-4px 0;rotate:-8deg}to{translate:4px -3px;rotate:8deg}}
+.pkstar{position:absolute;top:-4px;right:-4px;font-size:1.3rem;animation:kspin 1.2s linear infinite}
+.pkhole.gold{box-shadow:inset 0 -6px 0 #b8e3a0,0 0 0 3px #ffd75e,0 0 14px #ffd75e}
+.pkhole.booped{animation:pkboop .35s ease}
+.pkhole.stung{animation:khurt .4s ease}
+@keyframes pkboop{0%{scale:1}40%{scale:.9}100%{scale:1}}
+html[data-theme=night] .pkhole{background:radial-gradient(ellipse at 50% 92%,#3a2a3a 0 26%,#4a3648 27% 34%,transparent 35%),linear-gradient(#2a3a4a,#24384a);box-shadow:inset 0 -6px 0 #3f6a55}
+html[data-theme=night] .pkn{color:#7fb59a}
+@media (prefers-reduced-motion:reduce){.pkwho{transition:none}.pkbee,.pkstar{animation:none}.pkhole.booped,.pkhole.stung{animation:none}}
