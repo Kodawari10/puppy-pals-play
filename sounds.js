@@ -48,6 +48,8 @@
       var k = barkVoice(b).k;
       tone(c, t, 180 * k, 140 * k, 0.5, "sine", 0.1); tone(c, t + 0.6, 200 * k, 150 * k, 0.5, "sine", 0.09); tone(c, t + 1.2, 520 * k, 330 * k, 0.4, "sine", 0.06);
     },
+    // a squeaky toy: two quick rubbery squeaks
+    squeak: function (c, t) { tone(c, t, 1300, 1900, 0.08, "sine", 0.13); tone(c, t + 0.12, 1500, 2200, 0.1, "sine", 0.12); },
     pop: function (c, t) { tone(c, t, 400, 900, 0.09, "sine", 0.16); },
     // a happy little "hehe" pant in the pup's own voice
     pet: function (c, t, b) {

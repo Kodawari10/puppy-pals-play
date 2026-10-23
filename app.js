@@ -359,6 +359,44 @@
     if (naps[b.id] === NAP_RESTED) setTimeout(function () { toast("🌙 " + b.name + " is well rested! " + NAP_RESTED + " cosy naps"); sfx("yay"); }, 250);
   }
 
+  // ---------- Fetch: tap "Fetch" (or G) to throw a ball that bounces across; the pup hops after it and brings it back; 5 fetches makes it a fetch champ ----------
+  var FETCH_KEY = "puppyPals.fetches", FETCH_CHAMP = 5, fetches = {};
+  var BALLS = ["🎾", "🥎", "🏐", "🧸", "🦆"];
+  try { fetches = JSON.parse(localStorage.getItem(FETCH_KEY) || "{}"); } catch (e) { fetches = {}; }
+  if (!fetches || typeof fetches !== "object" || Array.isArray(fetches)) fetches = {};
+  Object.keys(fetches).forEach(function (id) {
+    var n = Math.floor(fetches[id]);
+    if (!B.some(function (b) { return b.id === id; }) || !(n > 0)) delete fetches[id]; else fetches[id] = n;
+  });
+  function fetchCount(id) { return fetches[id] || 0; }
+  function fetchText(b) {
+    var n = fetchCount(b.id); if (!n) return "";
+    return (n >= FETCH_CHAMP ? "🏅 " : "🎾 ") + n + (n === 1 ? " fetch" : " fetches") + (n >= FETCH_CHAMP ? ", fetch champ!" : "");
+  }
+  function paintFetch(b) {
+    $("dfetch").setAttribute("aria-label", "Play fetch with " + b.name + " (G)");
+    $("dfetchn").textContent = fetchText(b);
+  }
+  function playFetch() {
+    var b = visible[current]; if (!b || !dlg.open) return;
+    fetches[b.id] = fetchCount(b.id) + 1;
+    try { localStorage.setItem(FETCH_KEY, JSON.stringify(fetches)); } catch (e) {}
+    var toy = BALLS[(fetches[b.id] - 1) % BALLS.length];
+    paintFetch(b);
+    var z = $("zoom"), old = z.querySelector(".fball"); if (old) old.remove();
+    if (!reduced.matches) {
+      var ball = document.createElement("span");
+      ball.className = "fball"; ball.setAttribute("aria-hidden", "true"); ball.textContent = toy;
+      z.appendChild(ball);
+      ball.addEventListener("animationend", function () { ball.remove(); });
+      setTimeout(function () { if (ball.parentNode) ball.remove(); }, 2200);
+    }
+    var a = $("dart"); a.classList.remove("fetching"); void a.offsetWidth; a.classList.add("fetching");
+    $("dfetchlive").textContent = b.name + " chases the " + (toy === "🧸" ? "teddy" : toy === "🦆" ? "squeaky duck" : "ball") + " and brings it back!";
+    sfx("squeak"); setTimeout(function () { sfx("bark", b); }, 650);
+    if (fetches[b.id] === FETCH_CHAMP) setTimeout(function () { toast("🏅 " + b.name + " is a fetch champ! " + FETCH_CHAMP + " happy fetches"); sfx("yay"); }, 300);
+  }
+
   // ---------- 💞 Friendship hearts: pets, treats, baths, a favorite heart, a nickname and an outfit all grow each pup's friendship ----------
   var FRIEND_STEPS = [0, 1, 5, 10, 18, 26], FRIEND_MAX = 5;
   var FRIEND_TITLES = ["Just met", "New friend", "Pal", "Buddy", "Best buddy", "Best friends forever"];
@@ -485,7 +523,7 @@
     $("dname").textContent = b.name; $("dorigin").textContent = "📍 " + b.origin;
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
-    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintNap(b); $("dnaplive").textContent = ""; paintTrick(b); $("dtricklive").textContent = ""; paintDress(b); paintNick(b); paintFriend(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing", "napping", "trick-sit", "trick-paw", "trick-spin", "trick-jump", "trick-roll");
+    paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintNap(b); $("dnaplive").textContent = ""; paintFetch(b); $("dfetchlive").textContent = ""; paintTrick(b); $("dtricklive").textContent = ""; paintDress(b); paintNick(b); paintFriend(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing", "napping", "fetching", "trick-sit", "trick-paw", "trick-spin", "trick-jump", "trick-roll");
     $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact; if (typeof stopRead === "function") stopRead(); $("dreadlive").textContent = "";
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
@@ -550,8 +588,8 @@
   function step(d) { if (visible.length && !busy) openDlg((current + d + visible.length) % visible.length); }
   $("dprev").onclick = function () { step(-1); }; $("dnext").onclick = function () { step(1); };
   $("dclose").onclick = closeDlg;
-  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); }; $("dbath").onclick = bath; $("dnap").onclick = nap; $("dtrick").onclick = function () { trick(); };
-  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); if (e.animationName === "shakeoff") $("dart").classList.remove("bathing"); if (e.animationName === "napbreathe") $("dart").classList.remove("napping"); if (/^trick/.test(e.animationName)) TRICKS.forEach(function (x) { $("dart").classList.remove("trick-" + x.id); }); });
+  $("dpet").onclick = pet; $("dtreat").onclick = function () { treat(); }; $("dbath").onclick = bath; $("dnap").onclick = nap; $("dfetch").onclick = playFetch; $("dtrick").onclick = function () { trick(); };
+  $("dart").addEventListener("animationend", function (e) { if (e.animationName === "petwiggle") $("dart").classList.remove("petted"); if (e.animationName === "dresspop") $("dart").classList.remove("dressing"); if (e.animationName === "munch") $("dart").classList.remove("munch"); if (e.animationName === "shakeoff") $("dart").classList.remove("bathing"); if (e.animationName === "napbreathe") $("dart").classList.remove("napping"); if (e.animationName === "fetchhop") $("dart").classList.remove("fetching"); if (/^trick/.test(e.animationName)) TRICKS.forEach(function (x) { $("dart").classList.remove("trick-" + x.id); }); });
   $("dsurprise").onclick = surprise; $("dclassic").onclick = classic;
   // favoriting inside the dialog; if the favorites filter is on, re-render once the dialog closes
   $("dfav").onclick = function () { var b = visible[current]; if (!b) return; toggleFav(b); if (state.fav) pendingRender = true; };
@@ -574,6 +612,7 @@
     if ((e.key === "t" || e.key === "T") && !e.ctrlKey && !e.metaKey && !e.altKey) { trick(); return; }
     if ((e.key === "b" || e.key === "B") && !e.ctrlKey && !e.metaKey && !e.altKey) { bath(); return; }
     if ((e.key === "z" || e.key === "Z") && !e.ctrlKey && !e.metaKey && !e.altKey) { nap(); return; }
+    if ((e.key === "g" || e.key === "G") && !e.ctrlKey && !e.metaKey && !e.altKey) { playFetch(); return; }
     if ((e.key === "d" || e.key === "D") && !e.ctrlKey && !e.metaKey && !e.altKey) { surprise(); return; }
     if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.metaKey && !e.altKey) { sticker(); return; }
     if ((e.key === "l" || e.key === "L") && !e.ctrlKey && !e.metaKey && !e.altKey) { share(); return; }
@@ -830,6 +869,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, naps: function (id) { return id ? napCount(id) : JSON.parse(JSON.stringify(naps)); }, nap: nap, tricks: function (id) { return id ? trickCount(id) : JSON.parse(JSON.stringify(tricks)); }, trick: trick, trickList: TRICKS.map(function (t) { return t.id; }), nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice() };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, naps: function (id) { return id ? napCount(id) : JSON.parse(JSON.stringify(naps)); }, nap: nap, fetches: function (id) { return id ? fetchCount(id) : JSON.parse(JSON.stringify(fetches)); }, playFetch: playFetch, tricks: function (id) { return id ? trickCount(id) : JSON.parse(JSON.stringify(tricks)); }, trick: trick, trickList: TRICKS.map(function (t) { return t.id; }), nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice() };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();
