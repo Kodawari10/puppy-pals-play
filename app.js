@@ -1,9 +1,10 @@
 (function () {
   "use strict";
-  var B = window.BREEDS, SIZES = window.BREED_SIZES, GROUPS = window.BREED_GROUPS;
+  var B = window.BREEDS, SIZES = window.BREED_SIZES, GROUPS = window.BREED_GROUPS, REGIONS = window.BREED_REGIONS || [];
+  var REGION_ICON = { Europe: "🏰", Asia: "🏯", Africa: "🦁", Americas: "🌵", Oceania: "🦘" };
   var SIZE_RANK = {}; SIZES.forEach(function (s, i) { SIZE_RANK[s] = i; });
   var $ = function (id) { return document.getElementById(id); };
-  var state = { q: "", sizes: [], groups: [], sort: "az", fav: false };
+  var state = { q: "", sizes: [], groups: [], regions: [], sort: "az", fav: false };
   var HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.4 4.5 6.9 4.5c2.1 0 3.9 1.2 5.1 3 1.2-1.8 3-3 5.1-3 3.5 0 5.5 3.5 4.2 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
 
   // ---------- favorites (saved in localStorage) ----------
@@ -440,7 +441,7 @@
 
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function norm(s) { return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
-  function hay(b) { return norm([b.name, b.origin, b.group, b.size, nickOf(b.id)].concat(b.traits).join(" ")); }
+  function hay(b) { return norm([b.name, b.origin, b.group, b.region || "", b.size, nickOf(b.id)].concat(b.traits).join(" ")); }
   B.forEach(function (b) { b._hay = hay(b); });
 
   function chip(label, value, kind, count, dot) {
@@ -452,6 +453,7 @@
   }
   SIZES.forEach(function (s) { $("sizes").appendChild(chip(cap(s), s, "sizes", B.filter(function (b) { return b.size === s; }).length, true)); });
   GROUPS.forEach(function (g) { $("groups").appendChild(chip(g, g, "groups", B.filter(function (b) { return b.group === g; }).length)); });
+  REGIONS.forEach(function (r) { $("regions").appendChild(chip('<span aria-hidden="true">' + (REGION_ICON[r] || "🌍") + "</span> " + r, r, "regions", B.filter(function (b) { return b.region === r; }).length)); });
 
   document.querySelector(".controls").addEventListener("click", function (e) {
     if (e.target.closest("#favonly")) { state.fav = !state.fav; render(); sync(); return; }
@@ -462,7 +464,7 @@
   });
   var qt; $("q").addEventListener("input", function (e) { state.q = e.target.value; clearTimeout(qt); qt = setTimeout(function () { render(); sync(); }, 80); });
   $("sort").addEventListener("change", function (e) { state.sort = e.target.value; render(); sync(); });
-  function reset() { state.q = ""; state.sizes = []; state.groups = []; state.fav = false; $("q").value = ""; render(); sync(); $("q").focus(); }
+  function reset() { state.q = ""; state.sizes = []; state.groups = []; state.regions = []; state.fav = false; $("q").value = ""; render(); sync(); $("q").focus(); }
   $("reset").onclick = reset; $("reset2").onclick = reset;
 
   function filtered() {
@@ -471,6 +473,7 @@
       if (state.fav && !isFav(b.id)) return false;
       if (state.sizes.length && state.sizes.indexOf(b.size) < 0) return false;
       if (state.groups.length && state.groups.indexOf(b.group) < 0) return false;
+      if (state.regions.length && state.regions.indexOf(b.region) < 0) return false;
       return terms.every(function (t) { return b._hay.indexOf(t) >= 0; });
     });
     var byName = function (a, b) { return a.name.localeCompare(b.name); };
@@ -505,7 +508,7 @@
       cell.appendChild(c); cell.appendChild(h); frag.appendChild(cell);
     });
     g.appendChild(frag);
-    var filteredOn = state.q || state.sizes.length || state.groups.length || state.fav;
+    var filteredOn = state.q || state.sizes.length || state.groups.length || state.regions.length || state.fav;
     $("count").textContent = filteredOn ? "Showing " + visible.length + " of " + B.length + " breeds" : "All " + B.length + " breeds";
     $("reset").hidden = !filteredOn;
     $("empty").hidden = visible.length > 0;
@@ -803,12 +806,13 @@
   zoomEl.addEventListener("pointerup", up); zoomEl.addEventListener("pointercancel", up);
   applyZ(false);
 
-  // URL state (?q=&size=&group=&sort=)
+  // URL state (?q=&size=&group=&region=&sort=)
   function qs() {
     var p = new URLSearchParams();
     if (state.q) p.set("q", state.q);
     if (state.sizes.length) p.set("size", state.sizes.join(","));
     if (state.groups.length) p.set("group", state.groups.join(","));
+    if (state.regions.length) p.set("region", state.regions.join(","));
     if (state.sort !== "az") p.set("sort", state.sort);
     if (state.fav) p.set("fav", "1");
     var s = p.toString(); return s ? "?" + s : "";
@@ -819,6 +823,7 @@
     state.q = p.get("q") || ""; $("q").value = state.q;
     state.sizes = (p.get("size") || "").split(",").filter(function (s) { return SIZES.indexOf(s) >= 0; });
     state.groups = (p.get("group") || "").split(",").filter(function (g) { return GROUPS.indexOf(g) >= 0; });
+    state.regions = (p.get("region") || "").split(",").filter(function (r) { return REGIONS.indexOf(r) >= 0; });
     state.sort = p.get("sort") || "az"; $("sort").value = state.sort;
     state.fav = p.get("fav") === "1";
   })();
@@ -836,7 +841,7 @@
   }
   function openBreed(id) {
     var i = visible.findIndex(function (b) { return b.id === id; });
-    if (i < 0) { state.q = ""; state.sizes = []; state.groups = []; state.fav = false; $("q").value = ""; render(); sync(); i = visible.findIndex(function (b) { return b.id === id; }); }
+    if (i < 0) { state.q = ""; state.sizes = []; state.groups = []; state.regions = []; state.fav = false; $("q").value = ""; render(); sync(); i = visible.findIndex(function (b) { return b.id === id; }); }
     if (i >= 0) openDlg(i);
   }
   (function potd() {

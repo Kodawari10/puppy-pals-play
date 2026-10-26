@@ -1,20 +1,20 @@
-/* "Which pup are you?" personality match: 5 cute questions, then the breed that fits your answers best.
+/* "Which pup are you?" personality match: 6 cute questions (the last one picks a dream-trip region), then the breed that fits your answers best.
    Scoring is deterministic (same answers, same pup); the last match is kept in localStorage. */
 (function () {
   "use strict";
   var B = window.BREEDS, $ = function (id) { return document.getElementById(id); };
   var KEY = "puppyPals.match";
-  // each answer: t = traits it likes (2 pts each), g = groups (1 pt), s = sizes (pts), o = origin words (2 pts)
+  // each answer: t = traits it likes (2 pts each), g = groups (1 pt), s = sizes (pts), o = origin words (2 pts), r = regions (3 pts)
   var QS = [
     { q: "Pick a perfect Saturday 🌤️", a: [
-      ["🏃 Zoomies at the park", { t: ["Energetic", "Playful", "Athletic", "Lively", "Exuberant", "Sprightly"], g: ["Herding", "Sporting"] }],
-      ["🛋️ A cozy nap on the sofa", { t: ["Calm", "Easygoing", "Low-key", "Gentle", "Patient", "Adaptable", "Cat-like"], g: ["Toy"] }],
-      ["🧭 Exploring wherever I like", { t: ["Curious", "Inquisitive", "Nosy", "Bold", "Independent", "Merry", "Stubborn"], g: ["Hound", "Terrier"] }],
-      ["🎉 A party with all my friends", { t: ["Friendly", "Outgoing", "Sociable", "Cheerful", "Happy", "Affectionate"] }]] },
+      ["🏃 Zoomies at the park", { t: ["Energetic", "Playful", "Athletic", "Lively", "Exuberant", "Sprightly", "Tireless", "Swift", "Agile", "Spirited"], g: ["Herding", "Sporting"] }],
+      ["🛋️ A cozy nap on the sofa", { t: ["Calm", "Easygoing", "Low-key", "Gentle", "Patient", "Adaptable", "Cat-like"], g: ["Toy", "Non-Sporting"] }],
+      ["🧭 Exploring wherever I like", { t: ["Curious", "Inquisitive", "Nosy", "Bold", "Independent", "Merry", "Stubborn", "Adventurous", "Busy", "Keen"], g: ["Hound", "Terrier"] }],
+      ["🎉 A party with all my friends", { t: ["Friendly", "Outgoing", "Sociable", "Cheerful", "Happy", "Affectionate", "Gregarious", "Bouncy"] }]] },
     { q: "Your friends say you are…", a: [
-      ["🛡️ Super loyal", { t: ["Loyal", "Devoted", "Protective", "Dependable", "Watchful"], g: ["Working"] }],
-      ["🤪 Silly and fun", { t: ["Mischievous", "Playful", "Charming", "Sassy", "Feisty", "Cheerful", "Spunky"] }],
-      ["🧠 Really clever", { t: ["Smart", "Clever", "Brilliant", "Trainable", "Focused", "Obedient", "Bright"], g: ["Herding"] }],
+      ["🛡️ Super loyal", { t: ["Loyal", "Devoted", "Protective", "Dependable", "Watchful", "Faithful", "Hard-working"], g: ["Working"] }],
+      ["🤪 Silly and fun", { t: ["Mischievous", "Playful", "Charming", "Sassy", "Feisty", "Cheerful", "Spunky", "Silly", "Plucky"] }],
+      ["🧠 Really clever", { t: ["Smart", "Clever", "Brilliant", "Trainable", "Focused", "Obedient", "Bright", "Keen"], g: ["Herding"] }],
       ["🌸 Sweet and gentle", { t: ["Gentle", "Affectionate", "Loving", "Patient", "Polite", "Good-natured"] }]] },
     { q: "Pick a snack 🍡", a: [
       ["🍡 A tiny mochi", { s: { toy: 4, small: 1 } }],
@@ -22,15 +22,20 @@
       ["🍱 A big bento", { s: { medium: 3, large: 2 } }],
       ["🍕 The whole party platter", { s: { giant: 4, large: 2 } }]] },
     { q: "Something surprising happens! You…", a: [
-      ["🦁 Bravely check it out", { t: ["Brave", "Courageous", "Fearless", "Confident", "Bold"] }],
-      ["😌 Stay cool and do my own thing", { t: ["Calm", "Dignified", "Independent", "Low-key", "Easygoing", "Proud", "Stubborn", "Aloof", "Noble"] }],
+      ["🦁 Bravely check it out", { t: ["Brave", "Courageous", "Fearless", "Confident", "Bold", "Plucky", "Tough", "Strong-willed"] }],
+      ["😌 Stay cool and do my own thing", { t: ["Calm", "Dignified", "Independent", "Low-key", "Easygoing", "Proud", "Stubborn", "Aloof", "Noble", "Majestic", "Graceful", "Even-tempered"] }],
       ["📣 Tell everyone about it", { t: ["Talkative", "Alert", "Lively", "Outgoing", "Exuberant", "Vocal"] }],
-      ["🤗 Go find a hug", { t: ["Affectionate", "Loving", "Gentle", "Sociable", "Eager"] }]] },
+      ["🤗 Go find a hug", { t: ["Affectionate", "Loving", "Gentle", "Sociable", "Eager", "Friendly"] }]] },
     { q: "Your dream home 🏡", a: [
       ["🏙️ A cozy city flat", { g: ["Toy", "Non-Sporting"], s: { toy: 1, small: 1 } }],
       ["🌾 A farm with lots of space", { g: ["Herding", "Working"], s: { large: 1 } }],
-      ["🏔️ Snowy mountains", { o: ["Siberia", "Alaska", "Switzerland", "Japan", "Tibet", "Canada", "Newfoundland"], g: ["Working"] }],
-      ["🌲 A cottage by the forest", { g: ["Hound", "Terrier", "Sporting"], t: ["Merry", "Curious", "Food-motivated", "Clever"] }]] }
+      ["🏔️ Snowy mountains", { o: ["Siberia", "Alaska", "Switzerland", "Japan", "Tibet", "Canada", "Newfoundland", "Arctic", "Lapland", "Norway"], g: ["Working"] }],
+      ["🌲 A cottage by the forest", { g: ["Hound", "Terrier", "Sporting"], t: ["Merry", "Curious", "Food-motivated", "Clever"] }]] },
+    { q: "Pick a dream trip ✈️", a: [
+      ["🏰 Castles and cafés in Europe", { r: ["Europe"] }],
+      ["🏯 Temples and noodles in Asia", { r: ["Asia"] }],
+      ["🦁 A safari in Africa", { r: ["Africa"] }],
+      ["🌵 Deserts, beaches and kangaroos in the Americas or Oceania", { r: ["Americas", "Oceania"] }]] }
   ];
   function points(b, w) {
     var p = 0, tr = b.traits.map(function (t) { return t.toLowerCase(); });
@@ -38,6 +43,7 @@
     if ((w.g || []).indexOf(b.group) >= 0) p += 1;
     if (w.s && w.s[b.size]) p += w.s[b.size];
     (w.o || []).forEach(function (o) { if (b.origin.indexOf(o) >= 0) p += 2; });
+    if ((w.r || []).indexOf(b.region) >= 0) p += 3;
     return p;
   }
   // answers: array of answer indexes (0-3), one per question

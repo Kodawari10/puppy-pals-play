@@ -20,7 +20,22 @@
     { id: "hr", name: "Croatia", flag: "🇭🇷", hi: "Bok!", re: /Croatia/ },
     { id: "ca", name: "Canada", flag: "🇨🇦", hi: "Hello! Bonjour!", re: /Canada/ },
     { id: "es", name: "Spain", flag: "🇪🇸", hi: "¡Hola!", re: /Spain/ },
-    { id: "be", name: "Belgium", flag: "🇧🇪", hi: "Hallo! Bonjour!", re: /Belgium/ }
+    { id: "be", name: "Belgium", flag: "🇧🇪", hi: "Hallo! Bonjour!", re: /Belgium/ },
+    { id: "ie", name: "Ireland", flag: "🇮🇪", hi: "Dia duit!", re: /Ireland/ },
+    { id: "pt", name: "Portugal", flag: "🇵🇹", hi: "Olá!", re: /Portugal/ },
+    { id: "hu", name: "Hungary", flag: "🇭🇺", hi: "Szia!", re: /Hungary/ },
+    { id: "fi", name: "Finland", flag: "🇫🇮", hi: "Moi!", re: /Finland/ },
+    { id: "no", name: "Norway", flag: "🇳🇴", hi: "Hei!", re: /Norway/ },
+    { id: "kr", name: "South Korea", flag: "🇰🇷", hi: "Annyeong!", re: /Korea/ },
+    { id: "th", name: "Thailand", flag: "🇹🇭", hi: "Sawasdee!", re: /Thailand/ },
+    { id: "af", name: "Afghanistan", flag: "🇦🇫", hi: "Salaam!", re: /Afghanistan/ },
+    { id: "cd", name: "DR Congo", flag: "🇨🇩", hi: "Mbote!", re: /Congo/ },
+    { id: "zw", name: "Zimbabwe", flag: "🇿🇼", hi: "Mhoro!", re: /Zimbabwe/ },
+    { id: "za", name: "South Africa", flag: "🇿🇦", hi: "Sawubona!", re: /South Africa/ },
+    { id: "ml", name: "Mali & Niger", flag: "🇲🇱", hi: "I ni ce!", re: /Mali/ },
+    { id: "pe", name: "Peru", flag: "🇵🇪", hi: "¡Hola! Allillanchu!", re: /Peru/ },
+    { id: "br", name: "Brazil", flag: "🇧🇷", hi: "Olá!", re: /Brazil/ },
+    { id: "au", name: "Australia", flag: "🇦🇺", hi: "G'day!", re: /Australia/ }
   ];
   function countriesOf(b) { return C.filter(function (c) { return c.re.test(b.origin); }).map(function (c) { return c.id; }); }
   function pupsOf(id) {
