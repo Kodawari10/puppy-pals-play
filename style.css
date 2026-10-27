@@ -651,3 +651,24 @@ html[data-theme=night] .petn.fetchn{color:#c8f07a}
 .fball{position:absolute;left:12%;bottom:18%;font-size:clamp(28px,9vw,44px);pointer-events:none;z-index:3;animation:fballfly 1.6s ease-in-out forwards}
 @keyframes fballfly{0%{transform:translate(0,0) rotate(0) scale(.6);opacity:0}10%{opacity:1}35%{transform:translate(260%,-170%) rotate(300deg) scale(1)}55%{transform:translate(520%,0) rotate(520deg)}68%{transform:translate(560%,-40%) rotate(600deg)}80%{transform:translate(560%,0) rotate(640deg);opacity:1}100%{transform:translate(300%,40%) rotate(720deg) scale(.4);opacity:0}}
 @media (prefers-reduced-motion:reduce){.zart.fetching svg{animation-duration:.01s}}
+/* 🧭 Where's my home? */
+.homebtn{background:linear-gradient(135deg,#ffd38a,#ffb3c7 55%,#c9b6ff);color:#5a3360;box-shadow:0 6px 0 #d98aa8,0 10px 20px #ffb3c744}
+.homebtn:hover,.homebtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #d98aa8,0 0 0 4px #ffb3c744}
+.homebtn:active{box-shadow:0 3px 0 #d98aa8}
+.hq{text-align:center;font-weight:800;margin:4px 0 10px;color:var(--ink)}
+.hopt .hflag{font-size:1.5rem;line-height:1}
+.hstamps{text-align:center;font-size:1.6rem;letter-spacing:.1em;margin:0 0 8px;word-break:break-word}
+/* 👯 Pups like me */
+.cousins{margin:0 0 14px}
+.cotitle{font-size:1rem;margin:0 0 8px;color:var(--ink)}
+.corow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.copup{font:inherit;color:var(--ink);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 8px;border:2px solid var(--line);border-radius:18px;background:var(--card,#fff);cursor:pointer;min-height:44px;transition:transform .15s,box-shadow .15s}
+.copup:hover,.copup:focus-visible{transform:translateY(-2px);box-shadow:0 6px 14px #ff7aa833;border-color:var(--pink);outline:0}
+.copup .coart{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle,#fff 55%,#ffeef4);display:block;overflow:hidden}
+.copup .coart svg{width:100%;height:100%}
+.copup .con{font-weight:800;font-size:.8rem;line-height:1.15;text-align:center}
+.copup .cowhy{font-size:.68rem;color:var(--soft);line-height:1.15;text-align:center}
+.copup .conew{position:absolute;top:4px;right:4px;font-size:.6rem;font-weight:900;color:#fff;background:var(--pink);border-radius:999px;padding:1px 6px}
+html[data-theme=night] .copup{background:var(--card)}
+html[data-theme=night] .copup .coart{background:radial-gradient(circle,#fff7fb 55%,#efe6ff)}
+@media (prefers-reduced-motion:reduce){.copup{transition:none}}

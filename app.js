@@ -527,7 +527,7 @@
     $("dtags").innerHTML = b.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("");
     $("dgroup").textContent = b.group; $("dsize").textContent = cap(b.size);
     paintFav($("dfav"), b); meet(b); paintPets(b); paintSnack(b); $("dtreatlive").textContent = ""; paintBath(b); $("dbathlive").textContent = ""; paintNap(b); $("dnaplive").textContent = ""; paintFetch(b); $("dfetchlive").textContent = ""; paintTrick(b); $("dtricklive").textContent = ""; paintDress(b); paintNick(b); paintFriend(b); $("dresslive").textContent = ""; $("dart").classList.remove("petted", "dressing", "munch", "bathing", "napping", "fetching", "trick-sit", "trick-paw", "trick-spin", "trick-jump", "trick-roll");
-    $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact; if (typeof stopRead === "function") stopRead(); $("dreadlive").textContent = "";
+    $("dweight").textContent = b.weight; $("dlife").textContent = b.life; $("dfact").textContent = b.fact; paintCousins(b); if (typeof stopRead === "function") stopRead(); $("dreadlive").textContent = "";
     if (location.hash !== "#" + b.id) history.replaceState(null, "", qs() + "#" + b.id);
   }
   function inView(r) { return r.width > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth; }
@@ -832,6 +832,36 @@
   function openFromHash() { var id = decodeURIComponent(location.hash.slice(1)); if (id && B.some(function (b) { return b.id === id; })) openBreed(id); }
   openFromHash();
   window.addEventListener("hashchange", function () { if (!dlg.open) openFromHash(); });
+  // ---------- 👯 Pups like me: three look-alike cousins in every pup's card (same group, size, region or traits) ----------
+  function similar(b, n) {
+    n = n || 3;
+    var tr = b.traits.map(function (t) { return t.toLowerCase(); });
+    return B.filter(function (x) { return x.id !== b.id; }).map(function (x) {
+      var s = 0, why = "";
+      var shared = x.traits.filter(function (t) { return tr.indexOf(t.toLowerCase()) >= 0; });
+      if (x.group === b.group) { s += 3; why = why || "Also a " + (/s$/.test(b.group) ? b.group.replace(/s$/, "") : b.group) + " pup"; }
+      if (x.origin === b.origin) { s += 2; why = why || "Also from " + b.origin; }
+      else if (x.region === b.region) { s += 2; why = why || "Also from " + b.region; }
+      if (x.size === b.size) { s += 2; why = why || "Also " + b.size + "-sized"; }
+      s += shared.length * 1.5; if (!why && shared.length) why = "Also " + shared[0].toLowerCase();
+      return { b: x, s: s, why: why || "A fellow pup" };
+    }).sort(function (a, c) { return c.s - a.s || a.b.name.localeCompare(c.b.name); }).slice(0, n)
+      .map(function (r) { return { id: r.b.id, name: r.b.name, why: r.why }; });
+  }
+  function paintCousins(b) {
+    var row = $("dcorow"); if (!row) return;
+    row.innerHTML = similar(b).map(function (c) {
+      var x = B.filter(function (y) { return y.id === c.id; })[0], nk = nickOf(c.id), seen = isMet(c.id);
+      return '<button type="button" class="copup' + (seen ? " met" : "") + '" data-id="' + c.id + '" aria-label="Meet ' + x.name + ": " + c.why + (seen ? ", already met" : ", new friend") + '">' +
+        '<span class="coart" aria-hidden="true">' + DogArt.svg(dressed(x), { id: "co-" + x.id, title: false }) + '</span><span class="con">' + esc(nk || x.name) + '</span><span class="cowhy" aria-hidden="true">' + esc(c.why) + "</span>" + (seen ? "" : '<span class="conew" aria-hidden="true">new!</span>') + "</button>";
+    }).join("");
+  }
+  $("dcorow").addEventListener("click", function (e) {
+    var c = e.target.closest(".copup"); if (!c) return;
+    openBreed(c.dataset.id); sfx("pop");
+    var d = dlg.querySelector(".dbody"); if (d && d.scrollTo) d.scrollTo({ top: 0, behavior: reduced.matches ? "auto" : "smooth" });
+    $("dname").setAttribute("tabindex", "-1"); $("dname").focus({ preventScroll: true });
+  });
   // ---------- Pup of the Day: the same pup for everyone on a given local date ----------
   function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
   function pupOfDay(key) {
@@ -874,6 +904,6 @@
   }
   paintPassport();
   $("meetbtn").onclick = meetRandom;
-  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, naps: function (id) { return id ? napCount(id) : JSON.parse(JSON.stringify(naps)); }, nap: nap, fetches: function (id) { return id ? fetchCount(id) : JSON.parse(JSON.stringify(fetches)); }, playFetch: playFetch, tricks: function (id) { return id ? trickCount(id) : JSON.parse(JSON.stringify(tricks)); }, trick: trick, trickList: TRICKS.map(function (t) { return t.id; }), nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice() };
+  window.PuppyPals = { pupOfDay: pupOfDay, dayKey: dayKey, openBreed: openBreed, toast: toast, met: function () { return met.slice(); }, milestoneMsg: milestoneMsg, pets: function (id) { return id ? petCount(id) : JSON.parse(JSON.stringify(pets)); }, outfits: function () { return JSON.parse(JSON.stringify(outfits)); }, dressed: dressed, nick: nickOf, snacks: function () { return JSON.parse(JSON.stringify(snacks)); }, favSnack: favSnack, snackIds: SNACK_IDS.slice(), treat: treat, baths: function (id) { return id ? bathCount(id) : JSON.parse(JSON.stringify(baths)); }, bath: bath, naps: function (id) { return id ? napCount(id) : JSON.parse(JSON.stringify(naps)); }, nap: nap, fetches: function (id) { return id ? fetchCount(id) : JSON.parse(JSON.stringify(fetches)); }, playFetch: playFetch, tricks: function (id) { return id ? trickCount(id) : JSON.parse(JSON.stringify(tricks)); }, trick: trick, trickList: TRICKS.map(function (t) { return t.id; }), nickIdeas: NICK_IDEAS.slice(), cleanNick: cleanNick, shareUrl: shareUrl, readText: readText, readAloud: readAloud, friend: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? friendOf(b) : null; }, friendSteps: FRIEND_STEPS.slice(), similar: function (id) { var b = B.filter(function (x) { return x.id === id; })[0]; return b ? similar(b) : []; } };
   document.addEventListener("keydown", function (e) { if (e.key === "/" && document.activeElement !== $("q") && !dlg.open) { e.preventDefault(); $("q").focus(); } });
 })();

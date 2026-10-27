@@ -1,7 +1,7 @@
 // Puppy Pals service worker: precache the app so it opens offline.
 // Network-first, so a fresh online visit always gets the latest pups; the cache is the offline fallback.
-var CACHE = "puppy-pals-v29";
-var FILES = ["./", "index.html", "style.css", "dogs.js", "breeds.js", "app.js", "quiz.js", "pairs.js", "sounds.js", "sticker.js", "match.js", "compare.js", "theme.js", "catch.js", "bark.js", "trophies.js", "world.js", "scramble.js", "streak.js", "peekaboo.js", "manifest.webmanifest",
+var CACHE = "puppy-pals-v30";
+var FILES = ["./", "index.html", "style.css", "dogs.js", "breeds.js", "app.js", "quiz.js", "pairs.js", "sounds.js", "sticker.js", "match.js", "compare.js", "theme.js", "catch.js", "bark.js", "trophies.js", "world.js", "scramble.js", "streak.js", "peekaboo.js", "home.js", "manifest.webmanifest",
   "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
