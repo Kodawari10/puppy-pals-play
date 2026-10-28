@@ -20,7 +20,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">76</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="scramblebtn" class="quizbtn scramblebtn" type="button">🔤 Pup Scramble</button> <span id="scramblebest" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="barkbtn" class="quizbtn barkbtn" type="button">🎵 Bark Along</button> <span id="barkbest" class="quizbest"></span> <button id="peekbtn" class="quizbtn peekbtn" type="button">🌷 Peekaboo Pups</button> <span id="peekbest" class="quizbest"></span> <button id="worldbtn" class="quizbtn worldbtn" type="button">🌍 Pups around the world</button> <button id="homebtn" class="quizbtn homebtn" type="button">🧭 Where's my home?</button> <span id="homebest" class="quizbest"></span> <button id="trophybtn" class="quizbtn trophybtn" type="button">🏆 Trophies <span id="trophyn" class="tn">0/13</span></button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="scramblebtn" class="quizbtn scramblebtn" type="button">🔤 Pup Scramble</button> <span id="scramblebest" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="barkbtn" class="quizbtn barkbtn" type="button">🎵 Bark Along</button> <span id="barkbest" class="quizbest"></span> <button id="peekbtn" class="quizbtn peekbtn" type="button">🌷 Peekaboo Pups</button> <span id="peekbest" class="quizbest"></span> <button id="worldbtn" class="quizbtn worldbtn" type="button">🌍 Pups around the world</button> <button id="homebtn" class="quizbtn homebtn" type="button">🧭 Where's my home?</button> <span id="homebest" class="quizbest"></span> <button id="oddbtn" class="quizbtn oddbtn" type="button">🔍 Odd Pup Out</button> <span id="oddbest" class="quizbest"></span> <button id="makerbtn" class="quizbtn makerbtn" type="button">🎨 Pup Maker</button> <button id="trophybtn" class="quizbtn trophybtn" type="button">🏆 Trophies <span id="trophyn" class="tn">0/13</span></button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="passport" id="passport" aria-label="Pup Passport">
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">76</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="76" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
@@ -250,6 +250,36 @@
   </div>
 </dialog>
 
+<dialog id="odd" class="quiz odd" aria-labelledby="otitle">
+  <button class="close" id="oclose" aria-label="Close Odd Pup Out">×</button>
+  <h2 id="otitle" class="qtitle">Odd Pup Out! 🔍</h2>
+  <div class="qtrack" aria-hidden="true"><div class="qbar" id="obar"></div></div>
+  <div id="oplay">
+    <div class="qhud"><span id="oprog"></span><span id="ostars" class="qscore"></span></div>
+    <p class="hq">Three of these pups have something in common. Which one is different?</p>
+    <div class="opups" id="opups" role="group" aria-label="Which pup is the odd one out?"></div>
+    <p class="ohintrow"><button id="ohint" class="qnext soft" type="button" title="Hint (?)">💡 Hint</button> <span id="ohinttext" class="ohinttext" aria-live="polite"></span></p>
+    <p class="qfb" id="ofb" aria-live="polite"></p>
+    <button id="onext" class="qnext" type="button" hidden>Next round →</button>
+  </div>
+  <div id="odone" class="qdone" hidden>
+    <p class="qfinal" id="ofinal"></p>
+    <p id="omsg" aria-live="polite"></p>
+    <button id="oagain" class="qnext" type="button">Play again 🔍</button>
+  </div>
+</dialog>
+
+<dialog id="maker" class="quiz maker" aria-labelledby="mktitle">
+  <button class="close" id="mkclose" aria-label="Close Pup Maker">×</button>
+  <h2 id="mktitle" class="qtitle">Pup Maker 🎨</h2>
+  <div class="qart mkart" id="mkart" role="img"></div>
+  <form class="nickrow mknamerow" id="mknameform" autocomplete="off"><label for="mkname" class="nicklbl">✏️ Name</label><input id="mkname" class="nickin" type="text" maxlength="16" enterkeyhint="done" spellcheck="false" placeholder="Name your pup"><button id="mkdice" class="nickdice" type="button" title="Suggest a cute name" aria-label="Suggest a cute name">🎲</button></form>
+  <p class="mklook" id="mklook"></p>
+  <div class="mkparts" id="mkparts"></div>
+  <p class="sr" id="mklive" aria-live="polite"></p>
+  <p class="mkbtns"><button id="mkrandom" class="qnext" type="button" title="Surprise pup (R)">🎲 Surprise pup</button> <button id="mkmeet" class="qnext soft" type="button"></button> <button id="mkreset" class="qnext soft" type="button">↺ Start over</button></p>
+</dialog>
+
 <dialog id="catch" class="quiz catch" aria-labelledby="ktitle">
   <button class="close" id="kclose" aria-label="Close Treat Catch">×</button>
   <h2 id="ktitle" class="qtitle">Treat Catch! 🦴</h2>
@@ -337,5 +367,7 @@
 <script src="streak.js"></script>
 <script src="peekaboo.js"></script>
 <script src="home.js"></script>
+<script src="oddpup.js"></script>
+<script src="maker.js"></script>
 </body>
 </html>

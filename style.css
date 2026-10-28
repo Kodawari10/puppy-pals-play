@@ -672,3 +672,43 @@ html[data-theme=night] .petn.fetchn{color:#c8f07a}
 html[data-theme=night] .copup{background:var(--card)}
 html[data-theme=night] .copup .coart{background:radial-gradient(circle,#fff7fb 55%,#efe6ff)}
 @media (prefers-reduced-motion:reduce){.copup{transition:none}}
+/* 🔍 Odd Pup Out */
+.oddbtn{background:linear-gradient(135deg,#9fe3d0,#8fc9ff 55%,#d1b3ff);color:#2f4a6a;box-shadow:0 6px 0 #6aa6cc,0 10px 20px #8fc9ff44}
+.oddbtn:hover,.oddbtn:focus-visible{transform:translateY(-2px) rotate(1deg);box-shadow:0 8px 0 #6aa6cc,0 0 0 4px #8fc9ff44}
+.oddbtn:active{box-shadow:0 3px 0 #6aa6cc}
+.opups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 8px}
+.opup{font:inherit;color:var(--ink);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px 10px;border:2px solid var(--line);border-radius:20px;background:var(--card);cursor:pointer;min-height:44px;transition:transform .15s,box-shadow .15s}
+.opup:hover:not(:disabled),.opup:focus-visible{transform:translateY(-2px);box-shadow:0 6px 14px #8fc9ff55;border-color:#8fc9ff;outline:0}
+.opup .qk{position:absolute;top:6px;left:6px}
+.opup .oart{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,#fff 55%,#eef6ff);display:block;overflow:hidden}
+.opup .oart svg{width:100%;height:100%}
+.opup .oname{font-weight:800;font-size:.85rem;line-height:1.15;text-align:center}
+.opup .otag{font-size:.72rem;font-weight:800;color:var(--soft);min-height:1em}
+.opup:disabled{cursor:default}
+.opup.same{opacity:.75}
+.opup.isodd{opacity:1;background:#e6faee;border-color:#7fd3a0;box-shadow:0 0 0 3px #7fd3a055}
+.opup.wrong{background:#ffeef3;border-color:#ff9bb8;animation:shake .35s ease}
+.ohintrow{text-align:center;margin:4px 0}
+.ohinttext{display:block;font-weight:800;color:#6a5aa8;margin-top:6px;min-height:1.2em}
+@media (max-width:420px){.opup .oart{width:84px;height:84px}}
+html[data-theme=night] .opup.isodd{background:#21483a}html[data-theme=night] .opup.wrong{background:#4f2338}
+html[data-theme=night] .opup .oart{background:radial-gradient(circle,#fff7fb 55%,#e6efff)}html[data-theme=night] .ohinttext{color:#c9b6ff}
+/* 🎨 Pup Maker */
+.makerbtn{background:linear-gradient(135deg,#ffb3c7,#ffd38a 50%,#9fe3d0);color:#5a3a3a;box-shadow:0 6px 0 #e08aa0,0 10px 20px #ffb3c744}
+.makerbtn:hover,.makerbtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #e08aa0,0 0 0 4px #ffb3c744}
+.makerbtn:active{box-shadow:0 3px 0 #e08aa0}
+.mkart.mkpop{animation:mkpop .4s ease}
+@keyframes mkpop{0%{transform:scale(1)}40%{transform:scale(1.07) rotate(-2deg)}100%{transform:scale(1)}}
+.mklook{text-align:center;font-weight:700;margin:4px 0 8px}
+.mkparts{display:flex;flex-direction:column;gap:8px;margin:0 0 10px}
+.mkrow{display:flex;flex-direction:column;gap:4px}
+.mklbl{font-weight:800;font-size:.85rem;color:var(--soft)}
+.mkopts{display:flex;flex-wrap:wrap;gap:6px}
+.mkchip{font:inherit;font-weight:800;font-size:.82rem;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:999px;padding:8px 12px;min-height:44px;cursor:pointer;touch-action:manipulation}
+.mkchip[aria-pressed="true"]{background:var(--pinkbg);border-color:var(--pink);color:#d44d7e}
+.mkchip:focus-visible{outline:0;box-shadow:0 0 0 3px #ff7aa855}
+.mksw{width:44px;height:44px}
+.mksw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--pink);transform:scale(1.1)}
+.mkbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0}
+@media (max-width:480px){.mkbtns .qnext{flex:1 1 100%}}
+@media (prefers-reduced-motion:reduce){.mkart.mkpop{animation:none}.opup{transition:none}.opup.wrong{animation:none}}
