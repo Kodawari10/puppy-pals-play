@@ -20,7 +20,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">76</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="scramblebtn" class="quizbtn scramblebtn" type="button">🔤 Pup Scramble</button> <span id="scramblebest" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="barkbtn" class="quizbtn barkbtn" type="button">🎵 Bark Along</button> <span id="barkbest" class="quizbest"></span> <button id="peekbtn" class="quizbtn peekbtn" type="button">🌷 Peekaboo Pups</button> <span id="peekbest" class="quizbest"></span> <button id="worldbtn" class="quizbtn worldbtn" type="button">🌍 Pups around the world</button> <button id="homebtn" class="quizbtn homebtn" type="button">🧭 Where's my home?</button> <span id="homebest" class="quizbest"></span> <button id="oddbtn" class="quizbtn oddbtn" type="button">🔍 Odd Pup Out</button> <span id="oddbest" class="quizbest"></span> <button id="makerbtn" class="quizbtn makerbtn" type="button">🎨 Pup Maker</button> <button id="trophybtn" class="quizbtn trophybtn" type="button">🏆 Trophies <span id="trophyn" class="tn">0/13</span></button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="scramblebtn" class="quizbtn scramblebtn" type="button">🔤 Pup Scramble</button> <span id="scramblebest" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="barkbtn" class="quizbtn barkbtn" type="button">🎵 Bark Along</button> <span id="barkbest" class="quizbest"></span> <button id="peekbtn" class="quizbtn peekbtn" type="button">🌷 Peekaboo Pups</button> <span id="peekbest" class="quizbest"></span> <button id="worldbtn" class="quizbtn worldbtn" type="button">🌍 Pups around the world</button> <button id="homebtn" class="quizbtn homebtn" type="button">🧭 Where's my home?</button> <span id="homebest" class="quizbest"></span> <button id="oddbtn" class="quizbtn oddbtn" type="button">🔍 Odd Pup Out</button> <span id="oddbest" class="quizbest"></span> <button id="makerbtn" class="quizbtn makerbtn" type="button">🎨 Pup Maker</button> <button id="puzzlebtn" class="quizbtn puzzlebtn" type="button">🖼️ Pup Puzzle</button> <span id="puzzlebest" class="quizbest"></span> <button id="trophybtn" class="quizbtn trophybtn" type="button">🏆 Trophies <span id="trophyn" class="tn">0/13</span></button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="passport" id="passport" aria-label="Pup Passport">
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">76</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="76" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
@@ -280,6 +280,19 @@
   <p class="mkbtns"><button id="mkrandom" class="qnext" type="button" title="Surprise pup (R)">🎲 Surprise pup</button> <button id="mkmeet" class="qnext soft" type="button"></button> <button id="mkreset" class="qnext soft" type="button">↺ Start over</button></p>
 </dialog>
 
+<dialog id="puzzle" class="quiz puzzle" aria-labelledby="pztitle">
+  <button class="close" id="pzclose" aria-label="Close Pup Puzzle">×</button>
+  <h2 id="pztitle" class="qtitle">Pup Puzzle! 🖼️</h2>
+  <p class="pzsizes" role="group" aria-label="Puzzle size"><button id="pzsize3" class="mkchip" type="button" aria-pressed="true">🐣 Easy 3×3</button> <button id="pzsize4" class="mkchip" type="button" aria-pressed="false">🦊 Tricky 4×4</button></p>
+  <p class="hq" id="pzwho"></p>
+  <div class="pzwrap"><div class="pzgrid" id="pzgrid" role="group" aria-label="Puzzle tiles: tap one tile, then tap where it goes"></div><div class="pzpeekart" id="pzpeekart" aria-hidden="true"></div></div>
+  <div class="qhud pzhud"><span id="pzmoves"></span><span id="pzright" class="qscore"></span></div>
+  <p class="chint">Tap a tile, then tap another to swap them · arrows + Enter work too</p>
+  <p class="sr" id="pzlive" aria-live="polite"></p>
+  <div id="pzdone" class="pzdone" hidden><p id="pzdonemsg"></p><p class="mkbtns"><button id="pzmeet" class="qnext soft" type="button"></button></p></div>
+  <p class="mkbtns"><button id="pzpeek" class="qnext soft" type="button" title="Peek at the whole pup (P)">👀 Peek</button> <button id="pznew" class="qnext" type="button">🔀 New puzzle</button></p>
+</dialog>
+
 <dialog id="catch" class="quiz catch" aria-labelledby="ktitle">
   <button class="close" id="kclose" aria-label="Close Treat Catch">×</button>
   <h2 id="ktitle" class="qtitle">Treat Catch! 🦴</h2>
@@ -369,5 +382,6 @@
 <script src="home.js"></script>
 <script src="oddpup.js"></script>
 <script src="maker.js"></script>
+<script src="puzzle.js"></script>
 </body>
 </html>
