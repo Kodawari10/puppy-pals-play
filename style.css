@@ -734,3 +734,36 @@ html[data-theme=night] .opup .oart{background:radial-gradient(circle,#fff7fb 55%
 .pzdone{text-align:center;font-weight:700;margin:0 0 8px}
 html[data-theme=night] .pztile,html[data-theme=night] .pzpeekart{background:radial-gradient(circle at 50% 60%,#fff7fb 40%,#efe6ff)}
 @media (prefers-reduced-motion:reduce){.pztile,.pzgrid,.pzpeekart{transition:none}.pzgrid.done{animation:none}}
+/* 📖 Story time */
+.storybtn{background:linear-gradient(135deg,#c9b6ff,#ffb3c7 55%,#ffe08a);color:#4a3466;box-shadow:0 6px 0 #a58ad9,0 10px 20px #c9b6ff44}
+.storybtn:hover,.storybtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #a58ad9,0 0 0 4px #c9b6ff44}
+.storybtn:active{box-shadow:0 3px 0 #a58ad9}
+.stscene{position:relative;height:150px;border-radius:22px;margin:0 0 10px;overflow:hidden;border:2px solid var(--line)}
+.stscene.sky-beach{background:linear-gradient(#bfe8ff 0 55%,#8fd3f0 55% 68%,#ffe3a8 68%)}
+.stscene.sky-park{background:linear-gradient(#cdefff 0 58%,#a8e39b 58%)}
+.stscene.sky-snow{background:linear-gradient(#dfe9ff 0 55%,#ffffff 55%)}
+.stscene.sky-space{background:radial-gradient(circle at 20% 30%,#fff8 0 2px,transparent 3px),radial-gradient(circle at 70% 20%,#fff8 0 2px,transparent 3px),linear-gradient(#2b2255,#4b3a8a)}
+.stscene.sky-castle{background:linear-gradient(#ffe0ef 0 58%,#c7e8a8 58%)}
+.stscene.sky-rain{background:linear-gradient(#c9d3e6 0 58%,#9fc79a 58%)}
+.stdeco{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:1.5rem;letter-spacing:1.4em;padding-left:1.4em}
+.stpups{position:absolute;left:0;right:0;bottom:2px;display:flex;justify-content:center;gap:10px}
+.stpup{width:108px;height:108px;display:block}.stpup svg{width:100%;height:100%}
+.stpup.flip svg{transform:scaleX(-1)}
+.stpick{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:6px 8px;align-items:center;margin:0 0 8px}
+.stwho{display:flex;align-items:center;gap:6px;min-width:0;grid-column:1}
+.stwho .mklbl{flex:0 0 70px;text-align:left}
+.stsel{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.stsel b{flex:1;font-size:.9rem;text-align:center;min-width:0;line-height:1.15}
+.stswap{grid-column:2;grid-row:1 / span 2}
+.stnav{font:inherit;font-weight:900;width:44px;height:44px;flex:0 0 44px;border-radius:50%;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;touch-action:manipulation}
+.stnav:hover,.stnav:focus-visible{border-color:var(--pink);outline:0;box-shadow:0 0 0 3px #ff7aa833}
+.stplaces{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 10px}
+.sttext{background:#fffaf2;border:2px dashed #f3d9b5;border-radius:18px;padding:10px 14px;margin:0 0 10px;text-align:left;line-height:1.55;font-size:1rem}
+.sttext p{margin:0 0 6px}.sttext p:last-child{margin:0}
+.sttext p:first-child::first-letter{font-size:1.6em;font-weight:900;color:var(--pink)}
+.sttext.stpop{animation:mkpop .4s ease}
+#stread.on{border-color:var(--pink);animation:pulse 1.4s ease-in-out infinite}
+html[data-theme=night] .sttext{background:var(--card);border-color:#6b5a95}
+@media (max-width:420px){.stpup{width:92px;height:92px}.stscene{height:132px}.sttext{font-size:.95rem}}
+@media (prefers-reduced-motion:reduce){.sttext.stpop,#stread.on{animation:none}}
+@keyframes pulse{0%,100%{box-shadow:0 4px 0 var(--line)}50%{box-shadow:0 4px 0 var(--line),0 0 0 5px #ff7aa833}}
