@@ -659,8 +659,10 @@
     if (reading) { stopRead(); $("dreadlive").textContent = "Stopped reading."; return; }
     s.cancel();
     var u = new SpeechSynthesisUtterance(readText(b)); u.lang = "en-US"; u.rate = 0.95; u.pitch = 1.25;
-    var vs = (s.getVoices && s.getVoices()) || [], v = vs.filter(function (x) { return /^en(-|_|$)/i.test(x.lang || ""); });
-    if (v.length) try { u.voice = v.filter(function (x) { return /female|samantha|zira|google us/i.test(x.name || ""); })[0] || v[0]; } catch (e) {}
+    // only on-device voices: a cloud voice would send the text to a speech server. No on-device voice → no speech.
+    var vs = (s.getVoices && s.getVoices()) || [], v = vs.filter(function (x) { return x.localService === true && /^en(-|_|$)/i.test(x.lang || ""); });
+    if (!v.length) { $("dreadlive").textContent = "This device has no built-in English voice."; return; }
+    try { u.voice = v.filter(function (x) { return /female|samantha|zira/i.test(x.name || ""); })[0] || v[0]; } catch (e) { return; }
     u.onend = u.onerror = function () { if (reading === u) { reading = null; paintRead(false); } };
     reading = u; paintRead(true); hearts(["🗣️", "🎶", "💬"]);
     $("dreadlive").textContent = "Reading about " + b.name + " aloud.";
