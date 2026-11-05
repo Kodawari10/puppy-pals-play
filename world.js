@@ -11,7 +11,9 @@
     { id: "fr", name: "France", flag: "🇫🇷", hi: "Bonjour!", re: /France/ },
     { id: "us", name: "United States", flag: "🇺🇸", hi: "Howdy!", re: /United States/ },
     { id: "ru", name: "Russia", flag: "🇷🇺", hi: "Privet!", re: /Russia|Siberia/ },
-    { id: "cn", name: "China", flag: "🇨🇳", hi: "Nǐ hǎo!", re: /China|Tibet/ },
+    { id: "cn", name: "China", flag: "🇨🇳", hi: "Nǐ hǎo!", re: /China/ },
+    // a mountain region, not a country: no flag, so the game makes no claim about borders
+    { id: "hm", name: "Himalayas", flag: "🏔️", hi: "Tashi delek!", re: /Tibet|Himalaya/ },
     { id: "ch", name: "Switzerland", flag: "🇨🇭", hi: "Grüezi!", re: /Swiss|Switzerland/ },
     { id: "it", name: "Italy", flag: "🇮🇹", hi: "Ciao!", re: /Ital/ },
     { id: "pl", name: "Poland", flag: "🇵🇱", hi: "Cześć!", re: /Poland/ },
@@ -68,7 +70,7 @@
   function render(pop) {
     var m = met(), c = byId(cur), pups = pupsOf(cur);
     renderFlags(m);
-    $("wcount").textContent = "🗺️ " + ORDER.length + " countries · pups met from " + visited(m) + " of them";
+    $("wcount").textContent = "🗺️ " + ORDER.length + " places · pups met from " + visited(m) + " of them";
     $("wname").innerHTML = '<span aria-hidden="true">' + c.flag + "</span> " + esc(c.name);
     $("whi").textContent = "“" + c.hi + "” 👋";
     $("wstat").textContent = status(cur, m);
