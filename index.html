@@ -20,7 +20,7 @@
 <header class="hero">
   <h1>🐾 Puppy Pals</h1>
   <p class="sub">A kawaii gallery of <span id="total">76</span> dog breeds. Tap a pup to learn more!</p>
-  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="scramblebtn" class="quizbtn scramblebtn" type="button">🔤 Pup Scramble</button> <span id="scramblebest" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="barkbtn" class="quizbtn barkbtn" type="button">🎵 Bark Along</button> <span id="barkbest" class="quizbest"></span> <button id="peekbtn" class="quizbtn peekbtn" type="button">🌷 Peekaboo Pups</button> <span id="peekbest" class="quizbest"></span> <button id="worldbtn" class="quizbtn worldbtn" type="button">🌍 Pups around the world</button> <button id="homebtn" class="quizbtn homebtn" type="button">🧭 Where's my home?</button> <span id="homebest" class="quizbest"></span> <button id="oddbtn" class="quizbtn oddbtn" type="button">🔍 Odd Pup Out</button> <span id="oddbest" class="quizbest"></span> <button id="makerbtn" class="quizbtn makerbtn" type="button">🎨 Pup Maker</button> <button id="puzzlebtn" class="quizbtn puzzlebtn" type="button">🖼️ Pup Puzzle</button> <span id="puzzlebest" class="quizbest"></span> <button id="storybtn" class="quizbtn storybtn" type="button">📖 Story time</button> <button id="hidebtn" class="quizbtn hidebtn" type="button">🙈 Hide-and-Seek</button> <span id="hidebest" class="quizbest"></span> <button id="trophybtn" class="quizbtn trophybtn" type="button">🏆 Trophies <span id="trophyn" class="tn">0/13</span></button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
+  <p class="quizrow"><button id="quizbtn" class="quizbtn" type="button">🎀 Guess the Pup quiz</button> <span id="quizbest" class="quizbest"></span> <button id="pairsbtn" class="quizbtn pairsbtn" type="button">🧩 Pup Pairs</button> <span id="pairsbest" class="quizbest"></span> <button id="matchbtn" class="quizbtn matchbtn" type="button">🔮 Which pup are you?</button> <span id="matchlast" class="quizbest"></span> <button id="scramblebtn" class="quizbtn scramblebtn" type="button">🔤 Pup Scramble</button> <span id="scramblebest" class="quizbest"></span> <button id="comparebtn" class="quizbtn comparebtn" type="button">⚖️ Size up</button> <button id="catchbtn" class="quizbtn catchbtn" type="button">🦴 Treat Catch</button> <span id="catchbest" class="quizbest"></span> <button id="barkbtn" class="quizbtn barkbtn" type="button">🎵 Bark Along</button> <span id="barkbest" class="quizbest"></span> <button id="peekbtn" class="quizbtn peekbtn" type="button">🌷 Peekaboo Pups</button> <span id="peekbest" class="quizbest"></span> <button id="worldbtn" class="quizbtn worldbtn" type="button">🌍 Pups around the world</button> <button id="homebtn" class="quizbtn homebtn" type="button">🧭 Where's my home?</button> <span id="homebest" class="quizbest"></span> <button id="oddbtn" class="quizbtn oddbtn" type="button">🔍 Odd Pup Out</button> <span id="oddbest" class="quizbest"></span> <button id="makerbtn" class="quizbtn makerbtn" type="button">🎨 Pup Maker</button> <button id="puzzlebtn" class="quizbtn puzzlebtn" type="button">🖼️ Pup Puzzle</button> <span id="puzzlebest" class="quizbest"></span> <button id="storybtn" class="quizbtn storybtn" type="button">📖 Story time</button> <button id="hidebtn" class="quizbtn hidebtn" type="button">🙈 Hide-and-Seek</button> <span id="hidebest" class="quizbest"></span> <button id="postbtn" class="quizbtn postbtn" type="button">📮 Postcards</button> <span id="postbest" class="quizbest"></span> <button id="trophybtn" class="quizbtn trophybtn" type="button">🏆 Trophies <span id="trophyn" class="tn">0/13</span></button> <button id="themebtn" class="sndbtn themebtn" type="button" aria-pressed="false" aria-label="Night mode off">🌙</button> <button id="sndbtn" class="sndbtn" type="button" aria-pressed="true" aria-label="Sound effects on">🔊</button></p>
   <section class="passport" id="passport" aria-label="Pup Passport">
     <p class="pptxt"><span aria-hidden="true">🐾</span> Pup Passport: met <b id="metn">0</b> of <span id="mett">76</span> pups</p>
     <div class="pptrack" id="ppbar" role="progressbar" aria-label="Pups met" aria-valuemin="0" aria-valuemax="76" aria-valuenow="0"><div class="ppfill" id="ppfill"></div></div>
@@ -331,6 +331,31 @@
   </div>
 </dialog>
 
+<dialog id="post" class="quiz post" aria-labelledby="pctitle">
+  <button class="close" id="pcclose" aria-label="Close Postcards">×</button>
+  <h2 id="pctitle" class="qtitle">Postcards! 📮</h2>
+  <div id="pcwrite">
+    <p class="pcfrom" id="pcfrom"></p>
+    <article class="pccard" id="pccard">
+      <div class="pcmarks" aria-hidden="true"><span class="pcflag" id="pcflag"></span><span class="pcstampem" id="pcstampem"></span></div>
+      <div class="pcphoto" id="pcphoto"></div>
+      <div class="pcmsg" id="pcmsg"></div>
+    </article>
+    <div class="stpick pcpick">
+      <div class="stwho"><span class="mklbl">✉️ From</span><span class="stsel"><button id="pcprev" class="stnav" type="button" aria-label="Previous pup">◀</button><b id="pcpup" aria-live="polite"></b><button id="pcnext" class="stnav" type="button" aria-label="Next pup">▶</button></span></div>
+    </div>
+    <div class="pcstamps" id="pcstamps" role="group" aria-label="Pick a stamp"></div>
+    <p class="sr" id="pclive" aria-live="polite"></p>
+    <p class="mkbtns"><button id="pcsend" class="qnext" type="button" title="Send postcard (S)">📤 Send postcard</button> <button id="pcsurprise" class="qnext soft" type="button" title="Surprise pup (N)">🎲 Surprise</button> <button id="pcalbumbtn" class="qnext soft" type="button" title="Open album (A)">📬 Album</button></p>
+  </div>
+  <div id="pcalbum" hidden>
+    <p class="pccount" id="pccount"></p>
+    <div class="pcgrid" id="pcgrid"></div>
+    <p class="chint">Tap a card to read it again</p>
+    <p class="mkbtns"><button id="pcback" class="qnext" type="button">✏️ Write another</button></p>
+  </div>
+</dialog>
+
 <dialog id="catch" class="quiz catch" aria-labelledby="ktitle">
   <button class="close" id="kclose" aria-label="Close Treat Catch">×</button>
   <h2 id="ktitle" class="qtitle">Treat Catch! 🦴</h2>
@@ -423,5 +448,6 @@
 <script src="puzzle.js"></script>
 <script src="story.js"></script>
 <script src="hide.js"></script>
+<script src="post.js"></script>
 </body>
 </html>

@@ -787,3 +787,36 @@ html[data-theme=night] .hispot{background:linear-gradient(#3a3158 55%,#2b2442 55
 html[data-theme=night] .hispot.found{background:#21483a}
 @media (max-width:420px){.hispot{min-height:100px}.hispot .hiart{width:76px;height:76px}}
 @media (prefers-reduced-motion:reduce){.hispot,.hispot .hiemoji,.hispot .hiart{transition:none;animation:none}}
+/* 📮 Postcards */
+.postbtn{background:linear-gradient(135deg,#ffd38a,#ffb38a 55%,#ff9aa8);color:#6a3a2a;box-shadow:0 6px 0 #d98a6a,0 10px 20px #ffb38a44}
+.postbtn:hover,.postbtn:focus-visible{transform:translateY(-2px) rotate(1deg);box-shadow:0 8px 0 #d98a6a,0 0 0 4px #ffb38a44}
+.postbtn:active{box-shadow:0 3px 0 #d98a6a}
+.pcfrom{text-align:center;font-weight:800;margin:0 0 8px;color:var(--soft)}
+.pccard{position:relative;background:#fffaf2;border:2px solid #e8c9a0;border-radius:18px;padding:12px 14px 14px;margin:0 auto 10px;max-width:360px;box-shadow:4px 6px 0 #e8c9a055;text-align:left}
+.pccard.pcpop{animation:mkpop .4s ease}
+.pccard.pcsent{animation:pcsend .6s ease}
+@keyframes pcsend{0%{transform:none}40%{transform:translateY(-12px) rotate(-3deg) scale(1.03)}100%{transform:none}}
+.pcmarks{position:absolute;top:8px;right:10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:1.5rem;line-height:1}
+.pcphoto{width:100px;height:100px;margin:0 0 6px;border-radius:16px;background:radial-gradient(circle,#fff 55%,#ffe9c8);border:2px dashed #e8c9a0;overflow:hidden}
+.pcphoto svg{width:100%;height:100%}
+.pcmsg{font-size:.95rem;line-height:1.5}
+.pcmsg p{margin:0 0 6px}.pcmsg p:last-child{margin:0;font-weight:800;color:#c45b4a}
+.pcmsg p:first-child{font-weight:800;font-size:1.05rem;color:var(--ink)}
+.pcpick{margin:0 0 8px;display:flex;justify-content:center}
+.pcstamps{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 10px}
+#post .qnext,#post .stnav{min-height:44px;min-width:44px}
+.pcstampbtn{font:inherit;width:44px;height:44px;min-width:44px;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);cursor:pointer;font-size:1.25rem;touch-action:manipulation}
+.pcstampbtn[aria-pressed="true"]{border-color:var(--pink);box-shadow:0 0 0 3px #ff7aa833;transform:scale(1.08)}
+.pcstampbtn:focus-visible{outline:0;box-shadow:0 0 0 3px #ff7aa855}
+.pccount{text-align:center;font-weight:800;margin:0 0 8px}
+.pcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin:0 0 10px}
+.pcmini{font:inherit;color:var(--ink);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:2px solid #e8c9a0;border-radius:16px;background:#fffaf2;cursor:pointer;min-height:44px}
+.pcmini:hover,.pcmini:focus-visible{transform:translateY(-2px);box-shadow:0 6px 14px #e8c9a066;outline:0;border-color:var(--pink)}
+.pcminiart{width:72px;height:72px;display:block}
+.pcminiart svg{width:100%;height:100%}
+.pcministamp{position:absolute;top:4px;right:4px;font-size:.85rem}
+.pcminin{font-weight:800;font-size:.75rem;text-align:center;line-height:1.15}
+html[data-theme=night] .pccard,html[data-theme=night] .pcmini{background:var(--card);border-color:#6b5a95}
+html[data-theme=night] .pcphoto{background:radial-gradient(circle,#fff7fb 55%,#efe6ff);border-color:#6b5a95}
+html[data-theme=night] .pcmsg p:last-child{color:#ffb3a8}
+@media (prefers-reduced-motion:reduce){.pccard.pcpop,.pccard.pcsent,.pcmini{animation:none;transition:none}}
