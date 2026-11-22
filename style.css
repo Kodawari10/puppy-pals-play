@@ -693,6 +693,29 @@ html[data-theme=night] .copup .coart{background:radial-gradient(circle,#fff7fb 5
 @media (max-width:420px){.opup .oart{width:84px;height:84px}}
 html[data-theme=night] .opup.isodd{background:#21483a}html[data-theme=night] .opup.wrong{background:#4f2338}
 html[data-theme=night] .opup .oart{background:radial-gradient(circle,#fff7fb 55%,#e6efff)}html[data-theme=night] .ohinttext{color:#c9b6ff}
+/* 🕵️ Pup Detective */
+.detbtn{background:linear-gradient(135deg,#a9c3ff,#8fb0ff 55%,#c9b6ff);box-shadow:0 6px 0 #6f8fe0,0 10px 20px #8fb0ff44}
+.detbtn:hover,.detbtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #6f8fe0,0 0 0 4px #8fb0ff33}
+.detbtn:active{transform:translateY(3px);box-shadow:0 3px 0 #6f8fe0}
+.detclues{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:2em;margin:2px 4px 8px}
+.detclue{display:inline-block;font-weight:800;font-size:.9rem;color:#4a5a86;background:#eaf1ff;border:2px solid #cfe0ff;border-radius:999px;padding:5px 12px;animation:cluepop .25s ease}
+@keyframes cluepop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.detcluerow{text-align:center;margin:0 0 10px}
+.detboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 6px}
+.detpup{font:inherit;color:var(--ink);position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 10px;border:2px solid var(--line);border-radius:18px;background:var(--card);cursor:pointer;min-height:44px;transition:transform .15s,box-shadow .15s,opacity .25s}
+.detpup:hover:not(:disabled),.detpup:focus-visible{transform:translateY(-2px);box-shadow:0 6px 14px #8fb0ff55;border-color:#8fb0ff;outline:0}
+.detpup .detart{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle,#fff 55%,#eef2ff);display:block;overflow:hidden}
+.detpup .detart svg{width:100%;height:100%}
+.detpup .detname{font-weight:800;font-size:.76rem;line-height:1.1;text-align:center}
+.detpup:disabled{cursor:default}
+.detpup.out{opacity:.26;filter:grayscale(.7)}
+.detpup.found{opacity:1;filter:none;background:#e6faee;border-color:#7fd3a0;box-shadow:0 0 0 3px #7fd3a055}
+.detpup.wrong{background:#ffeef3;border-color:#ff9bb8;animation:shake .35s ease}
+@media (max-width:420px){.detpup .detart{width:62px;height:62px}.detboard{gap:6px}}
+html[data-theme=night] .detclue{color:#c9d6ff;background:#263056;border-color:#3a4677}
+html[data-theme=night] .detpup.found{background:#21483a}html[data-theme=night] .detpup.wrong{background:#4f2338}
+html[data-theme=night] .detpup .detart{background:radial-gradient(circle,#fff7fb 55%,#e6efff)}
+@media (prefers-reduced-motion:reduce){.detclue{animation:none}.detpup{transition:none}.detpup.wrong{animation:none}}
 /* 🎨 Pup Maker */
 .makerbtn{background:linear-gradient(135deg,#ffb3c7,#ffd38a 50%,#9fe3d0);color:#5a3a3a;box-shadow:0 6px 0 #e08aa0,0 10px 20px #ffb3c744}
 .makerbtn:hover,.makerbtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #e08aa0,0 0 0 4px #ffb3c744}
