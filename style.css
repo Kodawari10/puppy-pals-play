@@ -891,3 +891,32 @@ html[data-theme=night] .wchoice{background:var(--card)}
 .nlight:focus-visible{outline:0;box-shadow:0 0 0 3px #ffe08a88}
 @media (max-width:420px){.nbed{min-height:136px}.nbed .nart{width:68px;height:68px}}
 @media (prefers-reduced-motion:reduce){.nbed.nshake{animation:none}}
+/* 🩺 Pup Vet */
+.vetbtn{background:linear-gradient(135deg,#ffd6e4,#ff9fbf 50%,#9fe3d8);color:#6a2441;box-shadow:0 6px 0 #d97a9c,0 10px 20px #ff9fbf44}
+.vetbtn:hover,.vetbtn:focus-visible{transform:translateY(-2px) rotate(-1deg);box-shadow:0 8px 0 #d97a9c,0 0 0 4px #ff9fbf55}
+.vetbtn:active{box-shadow:0 3px 0 #d97a9c}
+.vprog{font-size:1.2rem;letter-spacing:4px;margin:2px 0 6px}
+.vpatient{position:relative;margin:0 auto;width:min(200px,60vw);min-height:150px;border-radius:24px;background:radial-gradient(circle at 50% 70%,#e8fbf6,#ffe9f1);border:3px dashed #ffb3cc;display:flex;align-items:center;justify-content:center}
+.vpatient .vart{width:140px;height:140px;display:block}
+.vpatient .vart svg,.vmini svg{width:100%;height:100%}
+.vpatient .vowie{position:absolute;top:8px;right:10px;font-size:1.9rem;animation:vbob 1.2s ease-in-out infinite}
+.vpatient.vbetter{border-style:solid;border-color:#7ed9a0;animation:vhop .5s ease}
+.vparty{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;padding:6px}
+.vmini{width:58px;height:58px;display:block}
+.vnote{min-height:2.6em;margin:8px 4px;font-weight:700}
+.vnote.voops{color:#b4486e}
+.vnote.vyay{color:#2f7a52}
+.vtools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.vtool{font:inherit;font-weight:800;font-size:.8rem;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:68px;padding:8px 4px;border:2px solid #ffc2d6;border-radius:16px;background:#fff;color:#5a2a3e;cursor:pointer;touch-action:manipulation}
+.vtool .ve{font-size:1.7rem;line-height:1}
+.vtool .vk{position:absolute;top:3px;left:6px;font-size:.65rem;opacity:.6}
+.vtool:hover:not(:disabled),.vtool:focus-visible{outline:0;border-color:#ff8fb3;box-shadow:0 0 0 3px #ff9fbf55;transform:translateY(-1px)}
+.vtool:disabled{cursor:default;opacity:.55}
+.vtool.vno{text-decoration:line-through;background:#f6eef1}
+[data-theme="night"] .vtool{background:#2c2440;color:#ffe3ee;border-color:#7a5a8c}
+[data-theme="night"] .vpatient{background:radial-gradient(circle at 50% 70%,#33405a,#3a2c48);border-color:#9a6a9c}
+[data-theme="night"] .vnote.voops{color:#ff9fbf}
+[data-theme="night"] .vnote.vyay{color:#9fe3b8}
+@keyframes vbob{50%{transform:translateY(-5px)}}
+@keyframes vhop{40%{transform:translateY(-10px) scale(1.03)}}
+@media (prefers-reduced-motion:reduce){.vpatient .vowie,.vpatient.vbetter{animation:none}}
